@@ -3,8 +3,10 @@ package com.trl;
 
 public class Textbook
 {
-	private String copyID;
-	private double price;
+	private final String copyID;
+	//TODO - rethink using double here.  Double is notoriously inaccurate after arithmetic is applied.
+	//Maybe BigDecimal.
+	private final double price;
 	
 	public Textbook(String copyID, double price) {
 		super();
@@ -14,16 +16,8 @@ public class Textbook
 	public String getCopyID() {
 		return copyID;
 	}
-	public void setCopyID(String copyID) {
-		this.copyID = copyID;
-	}
 	public double getPrice() {
 		return price;
 	}
-	public void setPrice(double price) {
-		this.price = price;
-	}
-	
-
 	
 }
