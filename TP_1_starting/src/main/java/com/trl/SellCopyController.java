@@ -53,7 +53,7 @@ public class SellCopyController extends Controller{
 		
 		for (Textbook price : dataStore.getPrices().values()) 
 		{
-			if (price.getCopyID().equals(copyID))
+			if (price.getBookID().equals(copyID))
 			{
 				//remove the sold copy 
 				dataStore.getCopies().remove(copyID);

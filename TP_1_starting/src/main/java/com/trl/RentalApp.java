@@ -29,6 +29,7 @@ public class RentalApp
 	public static void main(String[] args) { 
 		boolean exit = false;		
 		//GET User input for Patron
+		//TODO enable changing of patrons - the choosing of a patron should probably come after choice of 1,2,3 or 4.
 	    StdOut.println("Enter PatronID: ");
 		String patronID = StdIn.readLine();
 	   

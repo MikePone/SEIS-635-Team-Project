@@ -5,13 +5,24 @@ public class Copy
 {
 	private final String copyID;
 	private Patron outTo;
-	private Textbook price;
+	private final Textbook book;
 
+
+	public Copy(String cid, Textbook textBook)
+	{
+		this.copyID = cid;
+		this.book=textBook;
+	}
+	
 	// following generated in Eclipse Source menu
 
 	public Patron getOutTo()
 	{
 		return outTo;
+	}
+
+	public Textbook getTextbook() {
+		return book;
 	}
 
 	public void setOutTo(Patron outTo)
@@ -22,11 +33,6 @@ public class Copy
 	public String getCopyID()
 	{
 		return copyID;
-	}
-
-	public Copy(String cid)
-	{
-		this.copyID = cid;
 	}
 
 	public String toString()
@@ -51,7 +57,7 @@ public class Copy
 	}
 	public static void main(String[] args)
 	{
-		Copy c1 = new Copy("0047");
+		Copy c1 = new Copy("0047", new Textbook("id",1.01,"001","author1","title1"));
 		Patron p1 = new Patron("James", "008");
 
 		System.out.println(c1);

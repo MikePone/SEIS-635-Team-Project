@@ -46,13 +46,15 @@ public class CheckInController extends Controller{
 		return true;
 	}
 	
-	public void addCopyToCheckin(String copyID)  throws NoTransactionInProgress, CopyNotFoundException{
+	private void addCopyToCheckin(String copyID)  throws NoTransactionInProgress, CopyNotFoundException{
 		if (this.patronTransacted == null) {
 			throw new NoTransactionInProgress("no transaction in progress");
 		}
 		if (!this.dataStore.containsCopy(copyID)) {
 			throw new CopyNotFoundException("Copy : " + copyID + " not found");
 		}
+		//Is the copy checked out to this user?
+	//	this.patronTransacted.
 		this.copiesToCheckIn.add(this.dataStore.getCopy(copyID));
 	}
 	
@@ -63,6 +65,11 @@ public class CheckInController extends Controller{
 			while (!done){
 				StdOut.println("\nPlease enter the copyID to check in");
 				String copyID = StdIn.readLine();
+			    // check if book exist in the system list.
+				if (!dataStore.containsCopy(copyID)){
+					StdOut.println("\ncopyID " + copyID +" not found!");
+					throw new CopyNotFoundException("Copy : " + copyID + " not found");
+				}
 				addCopyToCheckin(copyID);
 				loggerIn.info("added book to check in " + copyID);
 				if (moreBooks()) {

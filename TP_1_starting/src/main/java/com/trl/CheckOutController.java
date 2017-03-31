@@ -29,8 +29,12 @@ public class CheckOutController extends Controller{
 			while (!done){
 				StdOut.println("\nPlease enter the copyID to check out");
 				String copyID = StdIn.readLine(); 
-				addCopyToCheckout(new Copy(copyID));
 			    // check if book exist in the system list.
+				if (!dataStore.containsCopy(copyID)){
+					StdOut.println("\ncopyID " + copyID +" not found!");
+					throw new CopyNotFoundException("Copy : " + copyID + " not found");
+				}
+				addCopyToCheckout(dataStore.getCopy(copyID));
 				loggerIn.info("Book checked out : " + copyID);
 				if (moreBooks()) {
 					continue;
@@ -95,12 +99,9 @@ public class CheckOutController extends Controller{
 		return true;
 	}
 	
-	public void addCopyToCheckout(Copy copy)  throws NoTransactionInProgress, CopyNotFoundException{
+	private void addCopyToCheckout(Copy copy)  throws NoTransactionInProgress{
 		if (this.patronTransacted == null) {
 			throw new NoTransactionInProgress("no transaction in progress");
-		}
-		if (!this.dataStore.containsCopy(copy.getCopyID())) {
-			throw new CopyNotFoundException("Copy : " + copy.getCopyID() + " not found");
 		}
 		this.copiesToCheckOut.add(copy);
 	}

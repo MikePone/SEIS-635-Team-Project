@@ -24,14 +24,18 @@ public class DataStore {
 		//load books Price; 
 		for (int i = 0; i < 10; i++) 
 	      {        
-			String id = "Copy" + (i+1);
-			Copy copy = new Copy("Copy" + (i+1));
-			copies.put(id, copy); // add copy to the set of copies.
+			String copyId = "Copy" + (i+1);
+			String bookId = "Book" + (i+1);
+			String author = "Author" + (i+1);
+			String title = "Title" + (i+1);
+			String ISBN = "001-2-" + (i+1);
+			Textbook book = new Textbook(title, 100+i, ISBN,author,title);
 			
-			Textbook price = new Textbook(copy.getCopyID(), 100+i);
-			prices.put(id, price);
+			Copy copy = new Copy("Copy" + (i+1),book);
+			copies.put(copyId, copy); // add copy to the set of copies.
+			
+			prices.put(bookId, book);
 	      }
-		
 		
 	}
 	
@@ -51,14 +55,20 @@ public class DataStore {
 		return this.copies.get(copyID);
 	}
 
+	//Do not expose the actual collection
+	@Deprecated 
 	public Map<String, Patron> getPatrons() {
 		return patrons;
 	}
 
+	//Do not expose the actual collection
+	@Deprecated
 	public Map<String, Copy> getCopies() {
 		return copies;
 	}
 
+	//Do not expose the actual collection
+	@Deprecated
 	public Map<String, Textbook> getPrices() {
 		return prices;
 	}
