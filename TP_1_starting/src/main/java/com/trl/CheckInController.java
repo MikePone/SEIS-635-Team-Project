@@ -6,7 +6,9 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.trl.exception.CopyNotCheckedOutException;
 import com.trl.exception.CopyNotFoundException;
+import com.trl.exception.HasHoldsException;
 import com.trl.exception.NoTransactionInProgress;
 import com.trl.exception.TransactionAlreadyInProgress;
 import com.trl.stdlib.StdIn;
@@ -46,16 +48,21 @@ public class CheckInController extends Controller{
 		return true;
 	}
 	
-	private void addCopyToCheckin(String copyID)  throws NoTransactionInProgress, CopyNotFoundException{
+	private void addCopyToCheckin(String copyID)  throws NoTransactionInProgress, CopyNotFoundException, CopyNotCheckedOutException{
 		if (this.patronTransacted == null) {
 			throw new NoTransactionInProgress("no transaction in progress");
 		}
 		if (!this.dataStore.containsCopy(copyID)) {
 			throw new CopyNotFoundException("Copy : " + copyID + " not found");
 		}
+		Copy copy = this.dataStore.getCopy(copyID);
 		//Is the copy checked out to this user?
-	//	this.patronTransacted.
-		this.copiesToCheckIn.add(this.dataStore.getCopy(copyID));
+		if (this.patronTransacted.hasCopyCheckedOut(copy)) {
+			this.copiesToCheckIn.add(copy);
+		}else {
+			throw new CopyNotCheckedOutException("Copy Not Checked Out to Patron.");
+		}
+			
 	}
 	
 	public void checkInBooks() {
@@ -70,7 +77,12 @@ public class CheckInController extends Controller{
 					StdOut.println("\ncopyID " + copyID +" not found!");
 					throw new CopyNotFoundException("Copy : " + copyID + " not found");
 				}
-				addCopyToCheckin(copyID);
+				try {
+					addCopyToCheckin(copyID);
+				} catch (CopyNotCheckedOutException e) {
+					loggerIn.info("Copy Not checked out to Patron: " + copyID);
+					StdOut.println("CopyID " + copyID +" not checked out to Patron!");
+				}
 				loggerIn.info("added book to check in " + copyID);
 				if (moreBooks()) {
 					continue;

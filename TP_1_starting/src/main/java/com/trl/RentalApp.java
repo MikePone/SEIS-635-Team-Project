@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.trl.ActionController.ACTION;
 import com.trl.exception.CopyNotFoundException;
+import com.trl.exception.HasHoldsException;
 import com.trl.exception.NoTransactionInProgress;
 import com.trl.exception.TransactionAlreadyInProgress;
 import com.trl.stdlib.StdIn;
@@ -90,7 +91,10 @@ public class RentalApp
 						} catch (NoTransactionInProgress e) {
 							loggerIn.info("no transaction in progress");
 							StdOut.println("cannot add a book, a transaction is not started");
-						}  
+						}  catch (HasHoldsException e){
+							loggerIn.info("Patron has holds on account, cannot checkout books.");
+							StdOut.println("Patron has holds on account, cannot checkout books.");
+						}
 						break;
 					case ViewPatron:
 						StdOut.println(patron.toString());		

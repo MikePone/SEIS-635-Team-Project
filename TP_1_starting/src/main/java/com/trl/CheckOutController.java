@@ -7,6 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.trl.exception.CopyNotFoundException;
+import com.trl.exception.HasHoldsException;
 import com.trl.exception.NoTransactionInProgress;
 import com.trl.exception.TransactionAlreadyInProgress;
 import com.trl.stdlib.StdIn;
@@ -75,11 +76,14 @@ public class CheckOutController extends Controller{
 	}
 	
 	@Override
-	public boolean startTransaction(Patron patron) throws TransactionAlreadyInProgress {
+	public boolean startTransaction(Patron patron) throws TransactionAlreadyInProgress,HasHoldsException {
 		
 		if (this.patronTransacted !=null) {
 			//existing transaction in progress!
 			throw new TransactionAlreadyInProgress("there is already a transaction in progress.");
+		}
+		if (patron.hasHolds()) {
+			throw new HasHoldsException("cannot check out a book with holds on account.");
 		}
 		this.patronTransacted = patron;
 		this.copiesToCheckOut = new ArrayList<Copy>();

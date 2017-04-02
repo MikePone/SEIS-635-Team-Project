@@ -2,6 +2,8 @@ package com.trl;
 
 import java.util.ArrayList;
 
+import com.trl.exception.CopyAlreadyCheckedOutException;
+import com.trl.exception.CopyNotFoundException;
 import com.trl.stdlib.StdOut;
 
 public class Patron
@@ -9,28 +11,40 @@ public class Patron
 	private final String name;
 	private final String patronID;
 	private final ArrayList<Copy> copiesOut;
+	private final ArrayList<Hold> patronHolds;
 
 	public Patron(String n, String id)
 	{
 		this.name = n;
 		this.patronID = id;
 		this.copiesOut = new ArrayList<Copy>();
+		this.patronHolds = new ArrayList<Hold>();
 	}
 	
 	public String getName() {
 		return name;
 	}
-//
-//	public String getPatronID() {
-//		return patronID;
-//	}
+	
+	public void addHold(Hold newHold){
+		this.patronHolds.add(newHold);
+	}
+	
+	public void removeHold(Hold oldHold){
+		this.patronHolds.remove(oldHold);
+	}
+	
+	public boolean hasHolds(){
+		return !this.patronHolds.isEmpty();
+	}
 
+	public boolean hasCopyCheckedOut(Copy c){
+		return this.copiesOut.contains(c);
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-	//	result = prime * result + ((copiesOut == null) ? 0 : copiesOut.hashCode());
-	//	result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((patronID == null) ? 0 : patronID.hashCode());
 		return result;
 	}
@@ -41,16 +55,7 @@ public class Patron
 		if (obj == null) return false;
 		if (getClass() != obj.getClass()) return false;
 		
-		Patron other = (Patron) obj;
-//		if (copiesOut == null) {
-//			if (other.copiesOut != null)
-//				return false;
-//		} else if (!copiesOut.equals(other.copiesOut))
-//			return false;
-//		if (name == null) {
-//			if (other.name != null)
-//				return false;
-//		} else 
+		Patron other = (Patron) obj; 
 		
 		if (!name.equals(other.name)) return false;
 		if (patronID == null) {
@@ -61,14 +66,14 @@ public class Patron
 		return true;
 	}
 
-	public boolean checkCopyOut(Copy c)
+	public boolean checkCopyOut(Copy c)  
 	{
 		c.setOutTo(this);
 		copiesOut.add(c);
 		return true;
 	}
 
-	public boolean checkCopyIn(Copy c)
+	public boolean checkCopyIn(Copy c) 
 	{
 		c.setOutTo(null);
 		if (copiesOut.contains(c))

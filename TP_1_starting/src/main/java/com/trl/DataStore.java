@@ -3,6 +3,8 @@ package com.trl;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.trl.Hold.HOLD_REASON;
+
 public class DataStore {
 
 	private final Map<String, Patron> patrons = new HashMap<String, Patron>(); 
@@ -18,6 +20,7 @@ public class DataStore {
 			String id = String.format("%03d", (i+1));
 			Patron patron = new Patron(name, id);
 			patrons.put(id, patron); // add patron to the set of patrons.
+			
 		}
 
 		//load books; Initialize with 10 Copy
@@ -36,6 +39,11 @@ public class DataStore {
 			
 			prices.put(bookId, book);
 	      }
+		
+		//Create a hold
+		Patron holdPatron = patrons.get("001");
+		Copy holdCopy = copies.get("Copy1");
+		holdPatron.addHold(new Hold(holdCopy, holdPatron, HOLD_REASON.OverdueBook));
 		
 	}
 	

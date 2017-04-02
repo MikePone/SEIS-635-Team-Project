@@ -1,5 +1,6 @@
 package com.trl;
 
+import com.trl.exception.HasHoldsException;
 import com.trl.exception.NoTransactionInProgress;
 import com.trl.exception.TransactionAlreadyInProgress;
 
@@ -10,7 +11,7 @@ public abstract class Controller {
 		this.dataStore=ds;
 	}
 	
-	public abstract boolean startTransaction(Patron patron) throws TransactionAlreadyInProgress;
+	public abstract boolean startTransaction(Patron patron) throws TransactionAlreadyInProgress, HasHoldsException;
 	
 	public abstract boolean endTransaction(Patron patron) throws NoTransactionInProgress;
 	
