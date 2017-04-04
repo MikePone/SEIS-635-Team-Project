@@ -10,8 +10,15 @@ public class Copy
 
 	public Copy(String cid, Textbook textBook)
 	{
+		if (cid !=null)
+		{
 		this.copyID = cid;
 		this.book=textBook;
+		}
+		else
+		{
+			throw new IllegalArgumentException("Copy Id cannot be empty");
+		}
 	}
 	
 	// following generated in Eclipse Source menu

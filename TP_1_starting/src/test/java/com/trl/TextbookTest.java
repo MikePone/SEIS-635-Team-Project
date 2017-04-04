@@ -14,7 +14,9 @@ public class TextbookTest {
 	private static final String AUTHOR="Author"; 
 	
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() throws Exception 
+	{
+		textbook= new Textbook(BOOKID,40,ISBN,AUTHOR,TITLE);
 	}
 
 	@After
@@ -23,13 +25,11 @@ public class TextbookTest {
 
 	@Test
 	public void testTextbook() {
-		textbook= new Textbook(BOOKID,40,ISBN,AUTHOR,TITLE);
 		assertNotNull(textbook); 
 	}
 
 	@Test
 	public void testGetBookID() {
-		textbook= new Textbook(BOOKID,40,ISBN,AUTHOR,TITLE);
 		assertEquals(BOOKID, textbook.getBookID()); 
 		try {
 			textbook= new Textbook(null,40,ISBN,AUTHOR,TITLE);//should throw an exception
@@ -43,7 +43,6 @@ public class TextbookTest {
   
 	@Test
 	public void testGetPrice() {
-		textbook= new Textbook(BOOKID,40,ISBN,AUTHOR,TITLE);
 		assertEquals(40, textbook.getPrice(),.00000000001d);
 		try {
 			textbook= new Textbook(BOOKID,-1,ISBN,AUTHOR,TITLE);//should throw an exception
@@ -57,7 +56,6 @@ public class TextbookTest {
 	
 	@Test
 	public void testGetISBN() {
-		textbook= new Textbook(BOOKID,40,ISBN,AUTHOR,TITLE);
 		assertEquals(ISBN, textbook.getISBN());
 		try {
 			textbook= new Textbook(BOOKID,40,null,AUTHOR,TITLE);//should throw an exception
@@ -71,7 +69,6 @@ public class TextbookTest {
 
 	@Test
 	public void testGetAuthor() {
-		textbook= new Textbook(BOOKID,40,ISBN,AUTHOR,TITLE);
 		assertEquals(AUTHOR, textbook.getAuthor());
 		try {
 			textbook= new Textbook(BOOKID,40,ISBN,null,TITLE);//should throw an exception
@@ -85,7 +82,6 @@ public class TextbookTest {
 
 	@Test
 	public void testGetTitle() {
-		textbook= new Textbook(BOOKID,40,ISBN,AUTHOR,TITLE);
 		assertEquals(TITLE, textbook.getTitle());
 		try {
 			textbook= new Textbook(BOOKID,40,ISBN,AUTHOR,null);//should throw an exception

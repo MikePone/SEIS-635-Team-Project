@@ -15,10 +15,18 @@ public class Patron
 
 	public Patron(String n, String id)
 	{
-		this.name = n;
-		this.patronID = id;
-		this.copiesOut = new ArrayList<Copy>();
-		this.patronHolds = new ArrayList<Hold>();
+		if( n != null)
+		{
+			this.name = n;
+			this.patronID = id;
+			this.copiesOut = new ArrayList<Copy>();
+			this.patronHolds = new ArrayList<Hold>();
+		}
+		else
+		{
+			throw new IllegalArgumentException("Patron Name cannot be empty");
+		}
+		
 	}
 	
 	public String getName() {

@@ -10,9 +10,9 @@ public class Textbook
 	private final String ISBN;
 	private final String author;
 	private final String title;
-	private final String edition;
+	//private final String edition;
 	
-	public Textbook(String id, double price, String ISBN, String author, String title, String edition) {
+	public Textbook(String id, double price, String ISBN, String author, String title) {
 		super();
 		if (id ==null || "".equals(id.trim())) {
 			throw new IllegalArgumentException("Book ID cannot be empty");
@@ -35,7 +35,7 @@ public class Textbook
 		}
 		this.title=title;
 		//edition can be null
-		this.edition=edition;
+		//this.edition=edition;
 	}
 	public String getBookID() {
 		return textbookID;
@@ -55,8 +55,8 @@ public class Textbook
 	public String getTitle() {
 		return title;
 	}
-	public String getEdition() {
+	/*public String getEdition() {
 		return edition;
-	}
+	}*/
 	
 }
