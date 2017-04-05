@@ -18,7 +18,7 @@ public class CopyTest {
 	public void setUp()
 	{
 		patron= new Patron("Patron1", "001");
-		textBook = new Textbook("id", 40, "ISBN", "author", "title");
+		textBook = new Textbook("id", 40, "ISBN", "author", "title","Edition1");
 		copy = new Copy(COPYID, textBook);		
 	}
 
@@ -54,7 +54,7 @@ public class CopyTest {
 	@Test
 	public void testGetTextbook() 
 	{
-		Textbook newTextbook = new Textbook("id", 40, "ISBN", "author", "title");
+		Textbook newTextbook = new Textbook("id", 40, "ISBN", "author", "title","Edition1");
 		assertEquals(newTextbook, textBook); 
 	}
 	

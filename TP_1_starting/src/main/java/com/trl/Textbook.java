@@ -10,9 +10,9 @@ public class Textbook
 	private final String ISBN;
 	private final String author;
 	private final String title;
-	//private final String edition;
+	private final String edition;
 	
-	public Textbook(String id, double price, String ISBN, String author, String title) {
+	public Textbook(String id, double price, String ISBN, String author, String title, String edition) {
 		super();
 		if (id ==null || "".equals(id.trim())) {
 			throw new IllegalArgumentException("Book ID cannot be empty");
@@ -35,7 +35,7 @@ public class Textbook
 		}
 		this.title=title;
 		//edition can be null
-		//this.edition=edition;
+		this.edition=edition;
 	}
 	public String getBookID() {
 		return textbookID;
@@ -55,8 +55,51 @@ public class Textbook
 	public String getTitle() {
 		return title;
 	}
-	/*public String getEdition() {
+	
+	public String getEdition() {
 		return edition;
-	}*/
+	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((ISBN == null) ? 0 : ISBN.hashCode());
+		result = prime * result + ((author == null) ? 0 : author.hashCode());
+		result = prime * result + ((textbookID == null) ? 0 : textbookID.hashCode());
+		result = prime * result + ((title == null) ? 0 : title.hashCode());
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Textbook other = (Textbook) obj;
+		if (ISBN == null) {
+			if (other.ISBN != null)
+				return false;
+		} else if (!ISBN.equals(other.ISBN))
+			return false;
+		if (author == null) {
+			if (other.author != null)
+				return false;
+		} else if (!author.equals(other.author))
+			return false;
+		if (textbookID == null) {
+			if (other.textbookID != null)
+				return false;
+		} else if (!textbookID.equals(other.textbookID))
+			return false;
+		if (title == null) {
+			if (other.title != null)
+				return false;
+		} else if (!title.equals(other.title))
+			return false;
+		return true;
+	}
+	
 	
 }

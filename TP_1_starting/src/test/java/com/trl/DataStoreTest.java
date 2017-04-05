@@ -20,7 +20,7 @@ public class DataStoreTest {
 	{
 		dataStore= new DataStore();
 		patron = new Patron("Patron1", "001");
-		Textbook book = new Textbook("Title1", 100, "123","Author","Title1");
+		Textbook book = new Textbook("Title1", 100, "123","Author","Title1","Edition1");
 		copy = new Copy("Copy1", book);
 	}
 

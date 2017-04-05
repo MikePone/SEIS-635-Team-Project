@@ -12,11 +12,12 @@ public class TextbookTest {
 	private static final String TITLE="Title";
 	private static final String ISBN="ISBN-01";
 	private static final String AUTHOR="Author"; 
+	private static final String EDITION="Edition1"; 
 	
 	@Before
 	public void setUp() throws Exception 
 	{
-		textbook= new Textbook(BOOKID,40,ISBN,AUTHOR,TITLE);
+		textbook= new Textbook(BOOKID,40,ISBN,AUTHOR,TITLE, EDITION);
 	}
 
 	@After
@@ -32,7 +33,7 @@ public class TextbookTest {
 	public void testGetBookID() {
 		assertEquals(BOOKID, textbook.getBookID()); 
 		try {
-			textbook= new Textbook(null,40,ISBN,AUTHOR,TITLE);//should throw an exception
+			textbook= new Textbook(null,40,ISBN,AUTHOR,TITLE, EDITION);//should throw an exception
 			fail();//fail if we get here,
 		}catch (IllegalArgumentException e) {
 			//success!
@@ -45,7 +46,7 @@ public class TextbookTest {
 	public void testGetPrice() {
 		assertEquals(40, textbook.getPrice(),.00000000001d);
 		try {
-			textbook= new Textbook(BOOKID,-1,ISBN,AUTHOR,TITLE);//should throw an exception
+			textbook= new Textbook(BOOKID,-1,ISBN,AUTHOR,TITLE, EDITION);//should throw an exception
 			fail();//fail if we get here,
 		}catch (IllegalArgumentException e) {
 			//success!
@@ -58,7 +59,7 @@ public class TextbookTest {
 	public void testGetISBN() {
 		assertEquals(ISBN, textbook.getISBN());
 		try {
-			textbook= new Textbook(BOOKID,40,null,AUTHOR,TITLE);//should throw an exception
+			textbook= new Textbook(BOOKID,40,null,AUTHOR,TITLE, EDITION);//should throw an exception
 			fail();//fail if we get here,
 		}catch (IllegalArgumentException e) {
 			//success!
@@ -71,7 +72,7 @@ public class TextbookTest {
 	public void testGetAuthor() {
 		assertEquals(AUTHOR, textbook.getAuthor());
 		try {
-			textbook= new Textbook(BOOKID,40,ISBN,null,TITLE);//should throw an exception
+			textbook= new Textbook(BOOKID,40,ISBN,null,TITLE, EDITION);//should throw an exception
 			fail();//fail if we get here,
 		}catch (IllegalArgumentException e) {
 			//success!
@@ -84,13 +85,21 @@ public class TextbookTest {
 	public void testGetTitle() {
 		assertEquals(TITLE, textbook.getTitle());
 		try {
-			textbook= new Textbook(BOOKID,40,ISBN,AUTHOR,null);//should throw an exception
+			textbook= new Textbook(BOOKID,40,ISBN,AUTHOR,null, EDITION);//should throw an exception
 			fail();//fail if we get here,
 		}catch (IllegalArgumentException e) {
 			//success!
 		}catch (Exception e) {
 			fail();
 		}
+	}
+
+	@Test
+	public void testGetEdition() {
+		assertEquals(EDITION, textbook.getEdition()); 
+		textbook= new Textbook(BOOKID,40,ISBN,AUTHOR,TITLE, null);//this is OK.
+		assertEquals(null, textbook.getEdition()); 
+		
 	}
 
 }
