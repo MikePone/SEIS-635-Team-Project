@@ -1,5 +1,6 @@
 package com.trl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.trl.exception.NoTransactionInProgress;
@@ -20,6 +21,7 @@ public class SaleController extends Controller{
 			//existing transaction in progress!
 			throw new TransactionAlreadyInProgress("there is already a transaction in progress.");
 		}
+		this.copiesToCheckOut = new ArrayList<Copy>();
 		this.patronTransacted = patron;
 		return true;
 	}
@@ -37,6 +39,7 @@ public class SaleController extends Controller{
 		return true;
 	}
 	
+	//this method not called yet in the app
 	public void addCopyToCheckout(Copy copy)  throws NoTransactionInProgress{
 		if (this.patronTransacted == null) {
 			throw new NoTransactionInProgress("no transaction in progress");

@@ -39,7 +39,7 @@ public class CheckInController extends Controller{
 	public boolean endTransaction(Patron patron) throws NoTransactionInProgress{
 		if (this.patronTransacted == null) {
 			throw new NoTransactionInProgress("no transaction in progress");
-		}
+		}//need to revisit; we don't require Patron object in the method
 		//commit check out books..
 		for (Copy copy : copiesToCheckIn) {
 			this.patronTransacted.checkCopyIn(copy);
