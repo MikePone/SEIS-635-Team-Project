@@ -33,15 +33,12 @@ public class CopyTest {
 
 	@Test
 	public void testGetCopyID() {
-		assertEquals(COPYID, copy.getCopyID()); 
-		try {
-			copy= new Copy(null, textBook);//should throw an exception
-			fail();//fail if we get here,
-		}catch (IllegalArgumentException e) {
-			//success!
-		}catch (Exception e) {
-			fail();
-		}
+		assertEquals(COPYID, copy.getCopyID());  
+	}
+	
+	@Test(expected=IllegalArgumentException.class)
+	public void testGetCopyNullID() { 
+		copy= new Copy(null, textBook);//should throw an exception
 	}
 	
 	@Test

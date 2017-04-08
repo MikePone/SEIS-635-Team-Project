@@ -23,8 +23,6 @@ public class PatronTest {
 
 		Textbook newTextbook = new Textbook("id", 40, "ISBN", "author", "title", "edition");
 		newCopy = new Copy("cid", newTextbook);
-		
-		
 	}
 
 	@After
@@ -38,15 +36,11 @@ public class PatronTest {
 
 	@Test
 	public void testGetName() {
-		assertEquals(NAME, patron.getName()); 
-		try {
-			patron= new Patron(null,PATRONID);//should throw an exception
-			fail();//fail if we get here,
-		}catch (IllegalArgumentException e) {
-			//success!
-		}catch (Exception e) {
-			fail();
-		}
+		assertEquals(NAME, patron.getName());
 	}
 
+	@Test(expected=IllegalArgumentException.class)
+	public void testGetNullName() {
+		patron= new Patron(null, PATRONID);
+	}
 }
