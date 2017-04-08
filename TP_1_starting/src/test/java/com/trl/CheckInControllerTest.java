@@ -6,6 +6,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.trl.Hold.HOLD_REASON;
 import com.trl.exception.NoTransactionInProgress;
 import com.trl.exception.TransactionAlreadyInProgress;
 
@@ -13,10 +14,13 @@ public class CheckInControllerTest {
 	private CheckInController controller;
 	private final DataStore ds = new DataStore();
 	private final Patron patron = ds.getPatron("001");
+	private Hold hold;
 	
 	@Before
 	public void setUp() throws Exception {
 		controller = new CheckInController(ds);
+		Copy copy = new Copy("001", new Textbook("id", 1, "ISBN", "author", "title", "edition"));
+		hold= new Hold(copy, patron, HOLD_REASON.OverdueBook);
 	}
 
 	@After

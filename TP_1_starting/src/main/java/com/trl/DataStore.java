@@ -32,7 +32,7 @@ public class DataStore {
 			String author = "Author" + (i+1);
 			String title = "Title" + (i+1);
 			String ISBN = "001-2-" + (i+1);
-			Textbook book = new Textbook(title, 100+i, ISBN,author,title,"Edition1");
+			Textbook book = new Textbook(copyId, 100+i, ISBN,author,title,"Edition1");
 			
 			Copy copy = new Copy("Copy" + (i+1),book);
 			copies.put(copyId, copy); // add copy to the set of copies.
@@ -61,6 +61,10 @@ public class DataStore {
 
 	public Copy getCopy(String copyID) {
 		return this.copies.get(copyID);
+	}
+	
+	public Textbook geTextbook(String bookId) {
+		return this.prices.get(bookId);
 	}
 
 	//Do not expose the actual collection
