@@ -13,14 +13,12 @@ import com.trl.exception.TransactionAlreadyInProgress;
 public class CheckInControllerTest {
 	private CheckInController controller;
 	private final DataStore ds = new DataStore();
-	private final Patron patron = ds.getPatron("001");
-	private Hold hold;
+	private final Patron patron = ds.getPatron("001"); 
 	
 	@Before
 	public void setUp() throws Exception {
 		controller = new CheckInController(ds);
-		Copy copy = new Copy("001", new Textbook("id", 1, "ISBN", "author", "title", "edition"));
-		hold= new Hold(copy, patron, HOLD_REASON.OverdueBook);
+		Copy copy = new Copy("001", new Textbook("id", 1, "ISBN", "author", "title", "edition")); 
 	}
 
 	@After

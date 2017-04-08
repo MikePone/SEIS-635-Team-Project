@@ -1,6 +1,6 @@
 package com.trl;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import org.junit.After;
 import org.junit.Before;
@@ -33,64 +33,37 @@ public class CheckOutControllerTest
 	}
 
 	@Test
-	public void testStartTransaction()  
-	{
-		boolean result = true;
-		boolean returnResult = startTranscation(patronTransacted);
-		assertEquals(result,returnResult ); 
-		
-		try 
-		{
+	public void testStartTransaction() throws Exception {
+		assertTrue(checkOutController.startTransaction(patronTransacted) ); 
+	}
+
+	@Test(expected=HasHoldsException.class)
+	public void testStartHoldTransaction() throws Exception {
 			patronTransacted.addHold(hold);
-			returnResult = checkOutController.startTransaction(patronTransacted);
-		} 
-		catch (HasHoldsException e) {
-			//should hit here, success
-		} catch (TransactionAlreadyInProgress e) {
-			//not testing
-		}
-		
-		try 
-		{
-			returnResult = checkOutController.startTransaction(null);
-		} 
-		catch (HasHoldsException e) {
-			//not testing
-		} catch (TransactionAlreadyInProgress e) {
-			//should hit here, success
-		}
+			checkOutController.startTransaction(patronTransacted);
+			fail();
 	}
 	
+
+	@Test(expected=TransactionAlreadyInProgress.class)
+	public void testStart2Transactions() throws Exception {
+		checkOutController.startTransaction(patronTransacted);
+		checkOutController.startTransaction(patronTransacted);
+		fail();
+	}
+
 	@Test
-	public void testEndTransaction()  
-	{
-		boolean result = true;
-		boolean returnResult = startTranscation(patronTransacted);
-		try 
-		{
-			returnResult = checkOutController.endTransaction(patronTransacted);
-		} 
-		catch (NoTransactionInProgress e) {
-			//not expected
-		}
-		assertEquals(result,returnResult ); 
+	public void testEndTransaction()  throws Exception{
+		assertTrue(checkOutController.startTransaction(patronTransacted));
+		assertTrue(checkOutController.endTransaction(patronTransacted));
 	}
-	
-	public boolean startTranscation(Patron patron)
-	{
-		boolean returnResult = false;
-		try 
-		{
-			returnResult = checkOutController.startTransaction(patronTransacted);
-		} 
-		catch (TransactionAlreadyInProgress e) 
-		{
-			//not expected
-		} catch (HasHoldsException e) {
-			//not expected
-		}
-		
-		return returnResult;
+
+	@Test(expected=NoTransactionInProgress.class)
+	public void testEnd2Transaction() throws Exception{
+		assertTrue(checkOutController.startTransaction(patronTransacted));
+		assertTrue(checkOutController.endTransaction(patronTransacted));
+		assertTrue(checkOutController.endTransaction(patronTransacted));
+	 
 	}
 
 }

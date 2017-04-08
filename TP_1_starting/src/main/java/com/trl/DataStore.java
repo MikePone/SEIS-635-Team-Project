@@ -67,6 +67,9 @@ public class DataStore {
 		return this.prices.get(bookId);
 	}
 
+	public boolean removeCopy(Copy c) {
+		return this.copies.remove(c.getCopyID())!=null ;
+	}
 	//Do not expose the actual collection
 	@Deprecated 
 	public Map<String, Patron> getPatrons() {

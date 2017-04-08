@@ -1,6 +1,8 @@
 package com.trl;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import org.junit.After;
 import org.junit.Before;
@@ -33,65 +35,41 @@ public class SellCopyControllerTest
 	}
 
 	@Test
-	public void testStartTransaction()  
-	{
-		boolean result = true;
-		boolean returnResult = startTranscation(patronTransacted);
-		assertEquals(result,returnResult ); 
-				
-		try 
-		{
-			returnResult = sellCopyController.startTransaction(null);
-		} 
-		catch (TransactionAlreadyInProgress e) {
-			//should hit here, success
-		}
+	public void testStartTransaction() throws Exception {
+		assertTrue(sellCopyController.startTransaction(patronTransacted) ); 
 	}
-	
-	public boolean startTranscation(Patron patron)
-	{
-		boolean returnResult = false;
-		try 
-		{
-			returnResult = sellCopyController.startTransaction(patronTransacted);
-		} 
-		catch (TransactionAlreadyInProgress e) 
-		{
-			//not expected
-		}
-		
-		return returnResult;
+	 
+
+	@Test(expected=TransactionAlreadyInProgress.class)
+	public void testStart2Transactions() throws Exception {
+		sellCopyController.startTransaction(patronTransacted);
+		sellCopyController.startTransaction(patronTransacted);
+		fail();
 	}
-	
+
 	@Test
-	public void testEndTransaction()  
-	{
-		boolean result = true;
-		boolean returnResult = startTranscation(patronTransacted);
-		try 
-		{
-			returnResult = sellCopyController.endTransaction(patronTransacted);
-		} 
-		catch (NoTransactionInProgress e) {
-			//not expected
-		}
-		assertEquals(result,returnResult ); 
+	public void testEndTransaction()  throws Exception{
+		assertTrue(sellCopyController.startTransaction(patronTransacted));
+		assertTrue(sellCopyController.endTransaction(patronTransacted));
+	}
+
+	@Test(expected=NoTransactionInProgress.class)
+	public void testEnd2Transaction() throws Exception{
+		assertTrue(sellCopyController.startTransaction(patronTransacted));
+		assertTrue(sellCopyController.endTransaction(patronTransacted));
+		assertTrue(sellCopyController.endTransaction(patronTransacted));
+	 
 	}
 	
-	@Test
-	public void testCalculateAmount()  
-	{
-		startTranscation(patronTransacted);
-		double actualPrice = dataStore.geTextbook("Book1").getPrice();
-		double price = 0 ;
-		try {
-			 price = sellCopyController.calculateAmount("Copy1");
-		} catch (NoTransactionInProgress e) {
-			//
-		} catch (CopyNotFoundException e) {
-			//		not expected
-			}
-        assertEquals (actualPrice, price, 100.0);
-	}
+//	@Test
+//	public void testCalculateAmount()  throws Exception
+//	{
+//		sellCopyController.startTransaction(patronTransacted);
+//		double actualPrice = dataStore.geTextbook("Book1").getPrice();
+//		double price = 0 ; 
+//		 price = sellCopyController.doSale("Copy1");
+//		 
+//        assertEquals (actualPrice, price, 100.0);
+//	}
 
 }

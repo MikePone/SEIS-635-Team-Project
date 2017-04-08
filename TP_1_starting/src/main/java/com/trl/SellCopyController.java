@@ -40,44 +40,32 @@ public class SellCopyController extends Controller{
 		if (this.patronTransacted == null) {
 			throw new NoTransactionInProgress("no transaction in progress");
 		}
+		this.patronTransacted=null;
 		return true;
 	}
 	
-	public double calculateAmount(String copyID)  throws NoTransactionInProgress, CopyNotFoundException{
+	private double calculateAmount(Copy c)  throws NoTransactionInProgress, CopyNotFoundException{
 		if (this.patronTransacted == null) {
 			throw new NoTransactionInProgress("no transaction in progress");
 		}
-		if (!this.dataStore.containsCopy(copyID)) {
-			throw new CopyNotFoundException("Copy : " + copyID + " not found");
-		}
-		
-		for (Textbook price : dataStore.getPrices().values()) 
-		{
-			if (price.getBookID().equals(copyID))
-			{
-				//remove the sold copy 
-				dataStore.getCopies().remove(copyID);
-				return price.getPrice(); // return the book price
-			}
-		}
-		return (Double) null;
+		return c.getTextbook().getPrice();
 	}
 	
-	private String copyID() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public void getPrice() {
+	public void doSale() {
 
 		boolean done = false;
 		try {
 			while (!done){
 				StdOut.println("\nPlease enter the copyID to sell");
 				String copyID = StdIn.readLine();
-				double amount = calculateAmount(copyID);
+				if (!this.dataStore.containsCopy(copyID)) {
+					throw new CopyNotFoundException("Copy : " + copyID + " not found");
+				}
+				Copy c = this.dataStore.getCopy(copyID);
+				double amount = calculateAmount(c);
+				this.dataStore.removeCopy(c);
 				StdOut.println("The book " + copyID+ " is sold to " + this.patronTransacted.getName() + " for the amount of " + amount);
-				loggerIn.info("added book to check in " + copyID);
+				loggerIn.info("sold book " + copyID + " to " + this.patronTransacted.getName());
 				if (moreBooks()) {
 					continue;
 				}else {

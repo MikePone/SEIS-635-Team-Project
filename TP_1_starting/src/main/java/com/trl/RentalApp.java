@@ -8,7 +8,7 @@ import javax.print.DocFlavor.STRING;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.trl.ActionController.ACTION;
+import com.trl.Controller.ACTION;
 import com.trl.exception.CopyNotFoundException;
 import com.trl.exception.HasHoldsException;
 import com.trl.exception.NoTransactionInProgress;
@@ -124,7 +124,8 @@ public class RentalApp
 							SellCopyController controller = new SellCopyController(dataStore);
 							controller.startTransaction(patron);
 							loggerIn.info("starting transaction for Patron " + patron.getName());
-							controller.getPrice();
+ 							controller.doSale();
+							//TODO -display to customer price and handle payment?
 							controller.endTransaction(patron);
 						} catch (TransactionAlreadyInProgress e) {
 							loggerIn.info("transaction already in progress");
@@ -150,4 +151,5 @@ public class RentalApp
 			StdOut.println(patronID + " is an invalid Patron");				
 		}
 	}	
+	 
 }
