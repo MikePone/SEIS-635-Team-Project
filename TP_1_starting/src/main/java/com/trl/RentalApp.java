@@ -1,15 +1,9 @@
 package com.trl;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.print.DocFlavor.STRING;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.trl.Controller.ACTION;
-import com.trl.exception.CopyNotFoundException;
 import com.trl.exception.HasHoldsException;
 import com.trl.exception.NoTransactionInProgress;
 import com.trl.exception.TransactionAlreadyInProgress;
@@ -27,7 +21,7 @@ public class RentalApp
 	private static final Logger loggerOut = LogManager.getLogger(LOGGER_CHECKOUT_NAME);
 	private static final Logger loggerSell = LogManager.getLogger(LOGGER_SELL_NAME);
 	
-	public static void main(String[] args) { 
+	public static void main(String[] args) {
 		boolean exit = false;		
 		//GET User input for Patron
 		//TODO enable changing of patrons - the choosing of a patron should probably come after choice of 1,2,3 or 4.
