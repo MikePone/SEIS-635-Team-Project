@@ -14,7 +14,10 @@ public abstract class Controller {
 		ViewPatron("4"),
 		ListBooks("5"), 
 		ListUsers("6"),
-		Exit("7");
+		PayFine("7"),
+		RunHoldCheck("8"),
+		ManageHolds("9"),
+		Exit("10");
 		
 		private String value;
 		ACTION(String val) {

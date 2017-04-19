@@ -58,7 +58,7 @@ public class CheckOutController extends Controller{
 		boolean returnVal=false;
 		
 		while (!done) {
-			StdOut.println("more books to check in?  type 'Y' or 'N'");
+			StdOut.println("more books to check out?  type 'Y' or 'N'");
 			//if done, set done to true
 			String moreBooks = StdIn.readLine();
 			

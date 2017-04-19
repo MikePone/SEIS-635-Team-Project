@@ -43,6 +43,9 @@ public class RentalApp
 					StdOut.println("4 : View Patron currently checked out books");
 					StdOut.println("5 : List books in inventory");
 					StdOut.println("6 : List users in system"); 
+					StdOut.println("7 : Pay Fine"); 
+					StdOut.println("8 : Run Hold check (Admin Only)"); 
+					StdOut.println("9 : Manage Holds (Admin Only"); 
 					StdOut.println("7 : Exit the system"); 
 					String in = StdIn.readLine();
 					
@@ -129,7 +132,13 @@ public class RentalApp
 							StdOut.println("cannot add a book, a transaction is not started");
 						}  
 						break;
-
+						
+					case PayFine:
+						break;
+					case RunHoldCheck:
+						break;
+					case ManageHolds:
+						break;
 					case Exit:
 						exit=true;
 						break;
