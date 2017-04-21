@@ -1,12 +1,13 @@
 package com.trl;
 
+import java.util.Date;
 
 public class Copy
 {
 	private final String copyID;
 	private Patron outTo;
 	private final Textbook book;
-
+	private Date dueDate;
 
 	public Copy(String cid, Textbook textBook)
 	{
@@ -32,9 +33,17 @@ public class Copy
 		return book;
 	}
 
-	public void setOutTo(Patron outTo)
+	public Date getDueDate() {
+		return dueDate;
+	}
+
+	public void setOutTo(Patron outTo, Date dueDate)
 	{
+		if (outTo == null){
+			this.dueDate=null;
+		}
 		this.outTo = outTo;
+		this.dueDate=dueDate;
 	}
 
 	public String getCopyID()
@@ -44,7 +53,7 @@ public class Copy
 
 	public String toString()
 	{
-		return "Copy w/id= " + this.copyID;
+		return "Copy w/id= " + this.copyID + " Due Date: " + this.dueDate;
 	}
 
 	@Override

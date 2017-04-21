@@ -46,7 +46,7 @@ public class RentalApp
 					StdOut.println("7 : Pay Fine"); 
 					StdOut.println("8 : Run Hold check (Admin Only)"); 
 					StdOut.println("9 : Manage Holds (Admin Only"); 
-					StdOut.println("7 : Exit the system"); 
+					StdOut.println("10 : Exit the system"); 
 					String in = StdIn.readLine();
 					
 					ACTION action = ACTION.fromString(in);
@@ -100,7 +100,7 @@ public class RentalApp
 						loggerIn.info("Listing books from Inventory ");
 						//same method as previous
 						StdOut.println("\nTODO: list books");
-						for (Copy cpy : dataStore.getCopies().values()) {
+						for (Copy cpy : dataStore.getCopyList()) {
 							StdOut.println(cpy.toString());				
 						}
 						break;
@@ -109,7 +109,7 @@ public class RentalApp
 						loggerIn.info("Listing users in system ");
 						//same method as previous
 						StdOut.println("\nList users");
-						for (Patron pat : dataStore.getPatrons().values()) {
+						for (Patron pat : dataStore.getPatronList()) {
 					    	pat.printPatron();
 						}
 						break;
@@ -136,6 +136,9 @@ public class RentalApp
 					case PayFine:
 						break;
 					case RunHoldCheck:
+						/*
+						 * We are going to go through all the copies and make sure their due dates are not BEFORE the current date and thus overdue.
+						 */
 						break;
 					case ManageHolds:
 						break;

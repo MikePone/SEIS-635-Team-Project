@@ -1,6 +1,8 @@
 package com.trl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.trl.Hold.HOLD_REASON;
@@ -70,25 +72,13 @@ public class DataStore {
 	public boolean removeCopy(Copy c) {
 		return this.copies.remove(c.getCopyID())!=null ;
 	}
-	//Do not expose the actual collection
-	@Deprecated 
-	public Map<String, Patron> getPatrons() {
-		return patrons;
+	
+	public List<Patron> getPatronList() {
+		return new ArrayList<>(this.patrons.values());
 	}
 
-	//Do not expose the actual collection
-	@Deprecated
-	public Map<String, Copy> getCopies() {
-		return copies;
+	public List<Copy> getCopyList() {
+		return new ArrayList<>(this.copies.values());
 	}
-
-	//Do not expose the actual collection
-	@Deprecated
-	public Map<String, Textbook> getPrices() {
-		return prices;
-	}
-	
-	
-	
 	
 }

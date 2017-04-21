@@ -1,6 +1,7 @@
 package com.trl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -17,7 +18,9 @@ public class CheckOutController extends Controller{
 	private Patron patronTransacted;
 	private List<Copy> copiesToCheckOut;
 	private final static Logger loggerIn = LogManager.getLogger(RentalApp.LOGGER_CHECKIN_NAME);
-
+	//This due date should be flexible and should change with each semester.
+	//The due date should be about 1 week after the semester ends to give students time to check the books back in.
+	private final Date dueDate = new Date(1495256400000l); //May 20 2017 12:00 AM
 	
 	public CheckOutController(DataStore ds) {
 		super(ds);
@@ -97,7 +100,7 @@ public class CheckOutController extends Controller{
 		}
 		//commit check out books..
 		for (Copy copy : copiesToCheckOut) {
-			this.patronTransacted.checkCopyOut(copy);
+			this.patronTransacted.checkCopyOut(copy, dueDate);
 		}
 		this.patronTransacted=null;
 		return true;

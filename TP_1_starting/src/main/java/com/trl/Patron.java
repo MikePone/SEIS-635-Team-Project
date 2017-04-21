@@ -1,6 +1,7 @@
 package com.trl;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.trl.exception.CopyAlreadyCheckedOutException;
 import com.trl.exception.CopyNotFoundException;
@@ -74,16 +75,16 @@ public class Patron
 		return true;
 	}
 
-	public boolean checkCopyOut(Copy c)  
+	public boolean checkCopyOut(Copy c, Date dueDate)  
 	{
-		c.setOutTo(this);
+		c.setOutTo(this, dueDate);
 		copiesOut.add(c);
 		return true;
 	}
 
 	public boolean checkCopyIn(Copy c) 
 	{
-		c.setOutTo(null);
+		c.setOutTo(null, null);
 		if (copiesOut.contains(c))
 		{
 			copiesOut.remove(c);
