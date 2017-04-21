@@ -33,7 +33,7 @@ public class CheckInController extends Controller{
 		this.patronTransacted = patron;
 		this.copiesToCheckIn = new ArrayList<Copy>();
 		return true;
-	}
+	} 
 	
 	@Override
 	public boolean endTransaction(Patron patron) throws NoTransactionInProgress{

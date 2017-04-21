@@ -3,6 +3,7 @@ package com.trl;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.junit.After;
 import org.junit.Before;
@@ -15,6 +16,7 @@ public class PatronTest {
 	private ArrayList<Copy> copiesOut= new ArrayList<Copy>();
 	private ArrayList<Hold> patronHolds; 
 	private Copy newCopy;
+	private final Date dueDate = new Date();
 	
 	@Before
 	public void setUp()
@@ -43,4 +45,22 @@ public class PatronTest {
 	public void testGetNullName() {
 		patron= new Patron(null, PATRONID);
 	}
+
+	@Test
+	public void testCheckOut() {
+		patron.checkCopyOut(newCopy, dueDate);
+		assertTrue(patron.hasCopyCheckedOut(newCopy));
+		assertEquals(dueDate, newCopy.getDueDate());
+	}
+	
+	@Test
+	public void testCheckIn() {
+		patron.checkCopyOut(newCopy, dueDate);
+		assertTrue(patron.hasCopyCheckedOut(newCopy));
+		assertEquals(dueDate, newCopy.getDueDate());
+		patron.checkCopyIn(newCopy);
+		assertFalse(patron.hasCopyCheckedOut(newCopy));
+		assertNull(newCopy.getDueDate());
+	}
+	
 }
