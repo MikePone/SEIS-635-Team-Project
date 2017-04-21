@@ -3,8 +3,6 @@ package com.trl;
 import java.util.ArrayList;
 import java.util.Date;
 
-import com.trl.exception.CopyAlreadyCheckedOutException;
-import com.trl.exception.CopyNotFoundException;
 import com.trl.stdlib.StdOut;
 
 public class Patron

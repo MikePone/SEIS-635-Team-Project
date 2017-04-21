@@ -32,4 +32,21 @@ public class Hold {
 		}
 		this.holdDate=new Date();
 	}
+
+	public Copy getHoldCopy() {
+		return holdCopy;
+	}
+
+	public Patron getHoldPatron() {
+		return holdPatron;
+	}
+
+	public Date getHoldDate() {
+		return holdDate;
+	}
+
+	public HOLD_REASON getReason() {
+		return reason;
+	}
+	
 }

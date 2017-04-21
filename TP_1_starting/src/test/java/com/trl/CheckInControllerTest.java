@@ -6,7 +6,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.trl.Hold.HOLD_REASON;
 import com.trl.exception.NoTransactionInProgress;
 import com.trl.exception.TransactionAlreadyInProgress;
 
@@ -18,7 +17,6 @@ public class CheckInControllerTest {
 	@Before
 	public void setUp() throws Exception {
 		controller = new CheckInController(ds);
-		Copy copy = new Copy("001", new Textbook("id", 1, "ISBN", "author", "title", "edition")); 
 	}
 
 	@After

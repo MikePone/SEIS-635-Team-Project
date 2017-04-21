@@ -1,6 +1,5 @@
 package com.trl;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -9,8 +8,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.trl.Hold.HOLD_REASON;
-import com.trl.exception.CopyNotFoundException;
-import com.trl.exception.HasHoldsException;
 import com.trl.exception.NoTransactionInProgress;
 import com.trl.exception.TransactionAlreadyInProgress;
 

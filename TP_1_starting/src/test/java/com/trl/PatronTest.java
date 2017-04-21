@@ -1,8 +1,11 @@
 package com.trl;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 import org.junit.After;
@@ -13,8 +16,6 @@ public class PatronTest {
 	private Patron patron;
 	private static final String NAME="Patron1";
 	private static final String PATRONID="001";
-	private ArrayList<Copy> copiesOut= new ArrayList<Copy>();
-	private ArrayList<Hold> patronHolds; 
 	private Copy newCopy;
 	private final Date dueDate = new Date();
 	

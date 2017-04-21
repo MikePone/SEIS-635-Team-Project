@@ -8,7 +8,6 @@ import org.apache.logging.log4j.Logger;
 
 import com.trl.exception.CopyNotCheckedOutException;
 import com.trl.exception.CopyNotFoundException;
-import com.trl.exception.HasHoldsException;
 import com.trl.exception.NoTransactionInProgress;
 import com.trl.exception.TransactionAlreadyInProgress;
 import com.trl.stdlib.StdIn;
