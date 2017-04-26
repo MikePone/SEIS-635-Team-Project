@@ -37,6 +37,7 @@ public class CheckOutController extends Controller{
 		boolean done = false;
 		try {
 			while (!done){
+				
 				StdOut.println("\nPlease enter the copyID to check out");
 				String copyID = StdIn.readLine(); 
 			    // check if book exist in the system list.
@@ -44,7 +45,10 @@ public class CheckOutController extends Controller{
 					StdOut.println("\ncopyID " + copyID +" not found!");
 					throw new CopyNotFoundException("Copy : " + copyID + " not found");
 				}
-				addCopyToCheckout(dataStore.getCopy(copyID));
+				Copy checkOutCopy = dataStore.getCopy(copyID);
+				checkOutCopy.setDueDate(new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000L));
+				addCopyToCheckout(checkOutCopy);
+				
 				loggerIn.info("Book checked out : " + copyID);
 				if (moreBooks()) {
 					continue;
