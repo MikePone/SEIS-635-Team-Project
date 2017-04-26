@@ -1,6 +1,7 @@
 package com.trl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,17 +38,27 @@ public class DataStore {
 			Textbook book = new Textbook(copyId, 100+i, ISBN,author,title,"Edition1");
 			
 			Copy copy = new Copy("Copy" + (i+1),book);
+			if (i >7)//set due dates 
+			{
+				Date date = new Date(System.currentTimeMillis() - 24 * 60 * 60 * 1000L);
+				copy.setDueDate(date);
+			}
 			copies.put(copyId, copy); // add copy to the set of copies.
 			
 			prices.put(bookId, book);
 	      }
 		
 		//Create a hold
-		Patron holdPatron = patrons.get("001");
-		Copy holdCopy = copies.get("Copy1");
-		holdPatron.addHold(new Hold(holdCopy, holdPatron, HOLD_REASON.OverdueBook));
-		
-	}
+		for (int i = 0; i < 10; i++) 
+	      {        
+			if (i >7)
+			{
+				Patron holdPatron = patrons.get("00"+i);
+				Copy holdCopy = copies.get("Copy"+i);
+				holdPatron.checkCopyOut(holdCopy, new Date(System.currentTimeMillis() - 24 * 60 * 60 * 1000L));
+				holdPatron.addHold(new Hold(holdCopy, holdPatron, HOLD_REASON.OverdueBook));			}
+	      }
+		}
 	
 	public boolean containsPatron(String patronID) {
 		return this.patrons.containsKey(patronID);

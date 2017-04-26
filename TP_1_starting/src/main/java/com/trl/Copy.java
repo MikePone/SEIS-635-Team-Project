@@ -79,6 +79,10 @@ public class Copy
 		System.out.println(c1);
 		System.out.println(p1);
 	}
+
+	public void setDueDate(Date dueDate) {
+		this.dueDate = dueDate;
+	}
 	
 	
 }

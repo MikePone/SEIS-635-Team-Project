@@ -122,4 +122,17 @@ public class Patron
 		System.out.println(p1);
 	}
 
+	public String getPatronID() {
+		return patronID;
+	}
+
+	public ArrayList<Copy> getCopiesOut() {
+		return copiesOut;
+	}
+
+	public ArrayList<Hold> getPatronHolds() {
+		return patronHolds;
+	}
+
+	
 }

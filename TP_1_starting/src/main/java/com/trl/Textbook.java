@@ -11,7 +11,7 @@ public class Textbook
 	private final String author;
 	private final String title;
 	private final String edition;
-	
+
 	public Textbook(String id, double price, String ISBN, String author, String title, String edition) {
 		super();
 		if (id ==null || "".equals(id.trim())) {
@@ -37,6 +37,7 @@ public class Textbook
 		//edition can be null
 		this.edition=edition;
 	}
+	
 	public String getBookID() {
 		return textbookID;
 	}

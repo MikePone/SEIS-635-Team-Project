@@ -65,6 +65,13 @@ public class CheckInController extends Controller{
 	}
 	
 	public void checkInBooks() {
+		if (this.patronTransacted.hasHolds())
+		{
+			loggerIn.info("ALERT : THIS PATRON HAS HOLD, OUTSTANDING DUES " + this.patronTransacted);
+			StdOut.println("-------******----------"); 
+			StdOut.println("ALERT : THIS PATRON HAS HOLD, OUTSTANDING DUES : " + this.patronTransacted);
+			StdOut.println("-------******----------"); 
+		}
 
 		boolean done = false;
 		try {

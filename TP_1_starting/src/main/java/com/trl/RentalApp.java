@@ -1,5 +1,7 @@
 package com.trl;
 
+import java.util.Date;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -21,7 +23,20 @@ public class RentalApp
 	private static final Logger loggerOut = LogManager.getLogger(LOGGER_CHECKOUT_NAME);
 	private static final Logger loggerSell = LogManager.getLogger(LOGGER_SELL_NAME);
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) 
+	{
+		StdOut.println("-------******----------"); 
+		StdOut.println("Running Code tips : ");
+		StdOut.println("Mock Patron Ids format; 001 through 010 ");
+		StdOut.println("Mock Copy Ids format; Copy1 through Copy10 ");
+		StdOut.println("Mock Textbook loaded with to respective price ");
+		StdOut.println("Mock Patron Ids with HOLD : 008, 009 and 010 ");
+		StdOut.println("-------******----------"); 
+		StdOut.println("-------******----------"); 
+		StdOut.println("To start any transaction or function, a valid Patron Id is required : ");
+		StdOut.println("List of operation are displayed upon entering Patron Id");
+		StdOut.println("-------******----------"); 
+		StdOut.println(); 
 		boolean exit = false;		
 		//GET User input for Patron
 		//TODO enable changing of patrons - the choosing of a patron should probably come after choice of 1,2,3 or 4.
@@ -32,6 +47,7 @@ public class RentalApp
 		if (dataStore.containsPatron(patronID))
 		{
 			Patron patron = dataStore.getPatron(patronID);
+			
 			StdOut.println("\nSession started for partron: " + patron);
 				while (!exit) 
 				{
@@ -47,6 +63,14 @@ public class RentalApp
 					StdOut.println("8 : Run Hold check (Admin Only)"); 
 					StdOut.println("9 : Manage Holds (Admin Only"); 
 					StdOut.println("10 : Exit the system"); 
+					
+					if (patron.hasHolds())
+					{
+						loggerIn.info("ALERT : THIS PATRON HAS HOLD, OUTSTANDING DUES " + patron);
+						StdOut.println("-------******----------"); 
+						StdOut.println("ALERT : THIS PATRON HAS HOLD, OUTSTANDING DUES : " + patron);
+						StdOut.println("-------******----------"); 
+					}
 					String in = StdIn.readLine();
 					
 					ACTION action = ACTION.fromString(in);
@@ -134,13 +158,45 @@ public class RentalApp
 						break;
 						
 					case PayFine:
+						try {
+							PayFineController controller = new PayFineController(dataStore);
+							controller.startTransaction(patron);
+							loggerIn.info("starting transaction for Patron " + patron.getName());
+ 							controller.payFine();
+							controller.endTransaction(patron);
+						} catch (TransactionAlreadyInProgress e) {
+							loggerIn.info("transaction already in progress");
+							StdOut.println("This register is already processing a transaction");
+						} catch (NoTransactionInProgress e) {
+							loggerIn.info("no transaction in progress");
+							StdOut.println("cannot pay fine, a transaction is not started");
+						}  
 						break;
 					case RunHoldCheck:
 						/*
 						 * We are going to go through all the copies and make sure their due dates are not BEFORE the current date and thus overdue.
 						 */
+						if (patron.hasHolds())
+							{
+							loggerIn.info("There are holds for the partron " + patron);
+							StdOut.println("There are holds for the partron");
+							StdOut.println( patron);
+							}
 						break;
 					case ManageHolds:
+						try {
+							ManageHoldController controller = new ManageHoldController(dataStore);
+							controller.startTransaction(patron);
+							loggerIn.info("starting transaction for Patron " + patron.getName());
+ 							controller.manageHold();
+							controller.endTransaction(patron);
+						} catch (TransactionAlreadyInProgress e) {
+							loggerIn.info("transaction already in progress");
+							StdOut.println("This register is already processing a transaction");
+						} catch (NoTransactionInProgress e) {
+							loggerIn.info("no transaction in progress");
+							StdOut.println("cannot pay fine, a transaction is not started");
+						}  
 						break;
 					case Exit:
 						exit=true;
