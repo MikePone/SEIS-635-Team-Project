@@ -46,7 +46,8 @@ public class CheckOutController extends Controller{
 					throw new CopyNotFoundException("Copy : " + copyID + " not found");
 				}
 				Copy checkOutCopy = dataStore.getCopy(copyID);
-				checkOutCopy.setDueDate(new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000L));
+				//due date set at transaction end.
+				//checkOutCopy.setDueDate(new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000L));
 				addCopyToCheckout(checkOutCopy);
 				
 				loggerIn.info("Book checked out : " + copyID);
