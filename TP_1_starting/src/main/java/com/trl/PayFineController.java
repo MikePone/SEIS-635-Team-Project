@@ -54,14 +54,16 @@ public class PayFineController extends Controller{
 	
 	public void payFine() 
 	{
-		Hold newHold = new Hold(new Copy("001",  new Textbook("id", 1, "ISBN", "author", "title", "edition")), this.patronTransacted, HOLD_REASON.UnpaidFine);
-		this.patronTransacted.addHold(newHold);
-		StdOut.println("Hold added to patron " + this.patronTransacted.getName() + " Currently on hold - fine due for unpaid fine ");
-		loggerIn.info("Hold added to patron " + this.patronTransacted.getName() + " Currently on hold - fine due for unpaid fine ");
+		StdOut.println("Current Hold patron " + this.patronTransacted.getName() + " Reason- fine due for unpaid fine ");
+		loggerIn.info("Current Hold patron " + this.patronTransacted.getName() + " Reason- fine due for unpaid fine ");
 		StdOut.println("\nPlease enter the amount to pay"); //this amount is dummy, no amount functionlity
 		String amount = StdIn.readLine();
 		
-		this.patronTransacted.removeHold(newHold);;
+		for (Hold oldHold :this.patronTransacted.getPatronHolds()) 
+		{
+			this.patronTransacted.removeHold(oldHold);
+			break;
+		}
 		StdOut.println("Hold removed from patron " + this.patronTransacted.getName());
 		loggerIn.info("Hold removed from patron " + this.patronTransacted.getName());
 	}

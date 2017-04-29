@@ -57,9 +57,7 @@ public class ManageHoldController extends Controller{
 				StdOut.println("3 : Exit");
 				String in = StdIn.readLine();
 				
-				if(in.equalsIgnoreCase("1")  || in.equalsIgnoreCase("2")) 
-				{
-					switch (in) {
+				switch (in) {
 					case "1":
 						Hold currentHold = null;
 						for (Hold newHold : this.patronTransacted.getPatronHolds())
@@ -89,12 +87,5 @@ public class ManageHoldController extends Controller{
 						StdOut.println("unrecocognized option:" + in);
 					}
 				}
-				else
-				{
-					StdOut.println("unrecocognized option:" + in);
-					continue;
-				}
-				
-			}	
 	}
 }

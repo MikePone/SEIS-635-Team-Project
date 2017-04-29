@@ -27,10 +27,11 @@ public class RentalApp
 	{
 		StdOut.println("-------******----------"); 
 		StdOut.println("Running Code tips : ");
-		StdOut.println("Mock Patron Ids format; 001 through 010 ");
-		StdOut.println("Mock Copy Ids format; Copy1 through Copy10 ");
-		StdOut.println("Mock Textbook loaded with to respective price ");
-		StdOut.println("Mock Patron Ids with HOLD : 008, 009 and 010 ");
+		StdOut.println("10 Mock Patron Ids format; 001 through 010 ");
+		StdOut.println("10 Mock Copy Ids format; Copy1 through Copy10 ");
+		StdOut.println("10 Mock Textbook loaded with respective price ");
+		StdOut.println("3 Mock Patron Ids with HOLD : 008, 009 and 010 ");
+		StdOut.println("3 Mock Copy Ids with due dates[set to yesterday; day prior to sysdate] : Copy08, Copy09, Copy10 ");
 		StdOut.println("-------******----------"); 
 		StdOut.println("-------******----------"); 
 		StdOut.println("To start any transaction or function, a valid Patron Id is required : ");
@@ -178,10 +179,16 @@ public class RentalApp
 						 */
 						if (patron.hasHolds())
 							{
-							loggerIn.info("There are holds for the partron " + patron);
-							StdOut.println("There are holds for the partron");
+							loggerIn.info("There are outstanding holds for the partron " + patron);
+							StdOut.println("There are outstanding holds for the partron");
 							StdOut.println( patron);
 							}
+						else
+						{
+							loggerIn.info("There are NO holds for the partron " + patron);
+							StdOut.println("There are NO holds for the partron");
+							StdOut.println( patron);							
+						}
 						break;
 					case ManageHolds:
 						try {
