@@ -1,0 +1,5 @@
+Import This project into Eclipse as an existing eclipse project.
+The project should contain the .project and .classpath files to make this easy.
+Build the project.
+Run the REntalApp.java main method.
+Follow the instructions presented on teh screen.
