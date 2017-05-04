@@ -6,7 +6,8 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({ CheckInControllerTest.class, CheckOutControllerTest.class, CopyTest.class, DataStoreTest.class,
-		HoldTest.class, PatronTest.class, SellCopyControllerTest.class, TextbookTest.class })
+		HoldTest.class, PatronTest.class, SellCopyControllerTest.class, TextbookTest.class, 
+		ManageHoldControllerTest.class, ControllerTest.class, PayFineControllerTest.class })
 public class AllTests {
 
 }
