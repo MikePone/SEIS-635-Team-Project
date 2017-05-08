@@ -1,24 +1,23 @@
 package com.trl;
 
+import java.math.BigDecimal;
 
 public class Textbook
 {
 	private final String textbookID;
-	//TODO - rethink using double here.  Double is notoriously inaccurate after arithmetic is applied.
-	//Maybe BigDecimal.
-	private final double price;
+	private final BigDecimal price;
 	private final String ISBN;
 	private final String author;
 	private final String title;
 	private final String edition;
 
-	public Textbook(String id, double price, String ISBN, String author, String title, String edition) {
+	public Textbook(String id, BigDecimal price, String ISBN, String author, String title, String edition) {
 		super();
 		if (id ==null || "".equals(id.trim())) {
 			throw new IllegalArgumentException("Book ID cannot be empty");
 		}
 		this.textbookID = id;
-		if (price <0) {
+		if (price.equals(0)) {
 			throw new IllegalArgumentException("price must be 0, or a positive number");
 		}
 		this.price = price;
@@ -41,7 +40,7 @@ public class Textbook
 	public String getBookID() {
 		return textbookID;
 	}
-	public double getPrice() {
+	public BigDecimal getPrice() {
 		return price;
 	}
 	public String getTextbookID() {

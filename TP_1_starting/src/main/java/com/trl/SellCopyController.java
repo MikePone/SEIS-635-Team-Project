@@ -1,5 +1,6 @@
 package com.trl;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,10 +45,11 @@ public class SellCopyController extends Controller{
 		return true;
 	}
 	
-	private double calculateAmount(Copy c)  throws NoTransactionInProgress, CopyNotFoundException{
+	private BigDecimal calculateAmount(Copy c)  throws NoTransactionInProgress, CopyNotFoundException{
 		if (this.patronTransacted == null) {
 			throw new NoTransactionInProgress("no transaction in progress");
 		}
+		//returns price of the book set as part of mock up in datastore
 		return c.getTextbook().getPrice();
 	}
 	
@@ -58,14 +60,22 @@ public class SellCopyController extends Controller{
 			while (!done){
 				StdOut.println("\nPlease enter the copyID to sell");
 				String copyID = StdIn.readLine();
+				
+				//validate the copy is valid 
 				if (!this.dataStore.containsCopy(copyID)) {
 					throw new CopyNotFoundException("Copy : " + copyID + " not found");
 				}
 				Copy c = this.dataStore.getCopy(copyID);
-				double amount = calculateAmount(c);
+				
+				//calculate the copy price
+				BigDecimal amount = calculateAmount(c);
+				
+				//remove after copy is sold from dataStore copy list
 				this.dataStore.removeCopy(c);
 				StdOut.println("The book " + copyID+ " is sold to " + this.patronTransacted.getName() + " for the amount of " + amount);
 				loggerIn.info("sold book " + copyID + " to " + this.patronTransacted.getName());
+				
+				// allow multiple sell copy; user input
 				if (moreBooks()) {
 					continue;
 				}else {

@@ -40,6 +40,7 @@ public class CheckInController extends Controller{
 			throw new NoTransactionInProgress("no transaction in progress");
 		}//need to revisit; we don't require Patron object in the method
 		//commit check out books..
+		// adding copy to the partron upon ending the transaction.
 		for (Copy copy : copiesToCheckIn) {
 			this.patronTransacted.checkCopyIn(copy);
 		}
@@ -48,16 +49,19 @@ public class CheckInController extends Controller{
 	}
 	
 	private void addCopyToCheckin(String copyID)  throws NoTransactionInProgress, CopyNotFoundException, CopyNotCheckedOutException{
+		//validation the transaction session is valid
 		if (this.patronTransacted == null) {
 			throw new NoTransactionInProgress("no transaction in progress");
 		}
+		//validation the transaction session is valid
 		if (!this.dataStore.containsCopy(copyID)) {
 			throw new CopyNotFoundException("Copy : " + copyID + " not found");
 		}
 		Copy copy = this.dataStore.getCopy(copyID);
 		//Is the copy checked out to this user?
+		//validation the copy is checkout out to this patron is valid
 		if (this.patronTransacted.hasCopyCheckedOut(copy)) {
-			this.copiesToCheckIn.add(copy);
+			this.copiesToCheckIn.add(copy);// add the copy checked in
 		}else {
 			throw new CopyNotCheckedOutException("Copy Not Checked Out to Patron.");
 		}
@@ -65,6 +69,7 @@ public class CheckInController extends Controller{
 	}
 	
 	public void checkInBooks() {
+		// Alert Staff if Patron has existing hold
 		if (this.patronTransacted.hasHolds())
 		{
 			loggerIn.info("ALERT : THIS PATRON HAS HOLD, OUTSTANDING DUES " + this.patronTransacted);
@@ -90,6 +95,7 @@ public class CheckInController extends Controller{
 					StdOut.println("CopyID " + copyID +" not checked out to Patron!");
 				}
 				loggerIn.info("added book to check in " + copyID);
+				// allow multiple check in ; user input
 				if (moreBooks()) {
 					continue;
 				}else {

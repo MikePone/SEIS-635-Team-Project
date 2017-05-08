@@ -1,5 +1,6 @@
 package com.trl;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,23 +46,27 @@ public class PayFineController extends Controller{
 		return true;
 	}
 	
-	private double calculateAmount(Copy c)  throws NoTransactionInProgress, CopyNotFoundException{
+	private BigDecimal calculateAmount(Copy c)  throws NoTransactionInProgress, CopyNotFoundException{
+		//invalid transaction session.
 		if (this.patronTransacted == null) {
 			throw new NoTransactionInProgress("no transaction in progress");
 		}
-		return c.getTextbook().getPrice();
+		return c.getTextbook().getPrice(); //return price
 	}
 	
 	public void payFine() 
 	{
 		StdOut.println("Current Hold patron " + this.patronTransacted.getName() + " Reason- fine due for unpaid fine ");
 		loggerIn.info("Current Hold patron " + this.patronTransacted.getName() + " Reason- fine due for unpaid fine ");
-		StdOut.println("\nPlease enter the amount to pay"); //this amount is dummy, no amount functionlity
-		String amount = StdIn.readLine();
+		StdOut.println("\nPlease enter the amount to pay"); //this amount is dummy, no amount functionality
 		
+		// this user input is not used; its only a mock 
+		String amount = StdIn.readLine(); 
+		
+		//lookup for exsiting hold for patron and remove 
 		for (Hold oldHold :this.patronTransacted.getPatronHolds()) 
 		{
-			this.patronTransacted.removeHold(oldHold);
+			this.patronTransacted.removeHold(oldHold); // remove the hold
 			break;
 		}
 		StdOut.println("Hold removed from patron " + this.patronTransacted.getName());

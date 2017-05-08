@@ -1,5 +1,6 @@
 package com.trl;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class Copy
@@ -73,7 +74,7 @@ public class Copy
 	}
 	public static void main(String[] args)
 	{
-		Copy c1 = new Copy("0047", new Textbook("id",1.01,"001","author1","title1", "edition1"));
+		Copy c1 = new Copy("0047", new Textbook("id", new BigDecimal("1.01"),"001","author1","title1", "edition1"));
 		Patron p1 = new Patron("James", "008");
 
 		System.out.println(c1);

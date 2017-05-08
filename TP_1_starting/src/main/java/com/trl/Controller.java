@@ -24,6 +24,7 @@ public abstract class Controller {
 			this.value=val;
 		}
 		
+		//validating user input with respective action controller
 		public static ACTION fromString(String text) {
 		    for (ACTION b : ACTION.values()) {
 		      if (b.value.equalsIgnoreCase(text)) {

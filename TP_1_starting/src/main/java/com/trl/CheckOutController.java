@@ -27,6 +27,7 @@ public class CheckOutController extends Controller{
 	}
 	
 	public void checkOutBooks() {
+		// Alert Staff if Patron has existing hold
 		if (this.patronTransacted.hasHolds())
 		{
 			loggerIn.info("ALERT : THIS PATRON HAS HOLD, OUTSTANDING DUES " + this.patronTransacted);
@@ -49,6 +50,7 @@ public class CheckOutController extends Controller{
 				addCopyToCheckout(checkOutCopy);
 				
 				loggerIn.info("Book checked out : " + copyID);
+				// allow multiple check out ; user input
 				if (moreBooks()) {
 					continue;
 				}else {
@@ -94,6 +96,7 @@ public class CheckOutController extends Controller{
 			//existing transaction in progress!
 			throw new TransactionAlreadyInProgress("there is already a transaction in progress.");
 		}
+		//validate - if patron has hold, they cannot checkout
 		if (patron.hasHolds()) {
 			throw new HasHoldsException("cannot check out a book with holds on account.");
 		}
@@ -108,6 +111,7 @@ public class CheckOutController extends Controller{
 			throw new NoTransactionInProgress("no transaction in progress");
 		}
 		//commit check out books..
+		// adding copy to the partron upon ending the transaction.
 		for (Copy copy : copiesToCheckOut) {
 			this.patronTransacted.checkCopyOut(copy, dueDate);
 		}
@@ -119,7 +123,7 @@ public class CheckOutController extends Controller{
 		if (this.patronTransacted == null) {
 			throw new NoTransactionInProgress("no transaction in progress");
 		}
-		this.copiesToCheckOut.add(copy);
+		this.copiesToCheckOut.add(copy); // add copy to checkout
 	}
 	
 }

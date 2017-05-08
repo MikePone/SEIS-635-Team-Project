@@ -1,5 +1,6 @@
 package com.trl;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -35,7 +36,7 @@ public class DataStore {
 			String author = "Author" + (i+1);
 			String title = "Title" + (i+1);
 			String ISBN = "001-2-" + (i+1);
-			Textbook book = new Textbook(copyId, 100+i, ISBN,author,title,"Edition1");
+			Textbook book = new Textbook(copyId, new BigDecimal(100+i), ISBN,author,title,"Edition1");
 			
 			Copy copy = new Copy("Copy" + (i+1),book);
 			if (i >7)//set due dates 
@@ -48,7 +49,7 @@ public class DataStore {
 			prices.put(bookId, book);
 	      }
 		
-		//Create a hold
+		//Create a hold for PatronId > 7 
 		for (int i = 0; i < 10; i++) 
 	      {        
 			if (i >7)

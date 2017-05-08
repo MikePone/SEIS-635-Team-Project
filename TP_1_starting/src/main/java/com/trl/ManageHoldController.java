@@ -1,14 +1,13 @@
 package com.trl;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.trl.Controller.ACTION;
 import com.trl.Hold.HOLD_REASON;
-import com.trl.exception.CopyNotFoundException;
 import com.trl.exception.NoTransactionInProgress;
 import com.trl.exception.TransactionAlreadyInProgress;
 import com.trl.stdlib.StdIn;
@@ -46,6 +45,7 @@ public class ManageHoldController extends Controller{
 		return true;
 	}
 	
+	//allow rental staff to manage hold, add or remove existing hold
 	public void manageHold() {
 		StdOut.println("\nManage hold for patron " + this.patronTransacted.toString());
 
@@ -60,22 +60,24 @@ public class ManageHoldController extends Controller{
 				switch (in) {
 					case "1":
 						Hold currentHold = null;
+						//get the current hold for the patron
 						for (Hold newHold : this.patronTransacted.getPatronHolds())
 						{
 							currentHold = newHold;
 							break;
 						}
 
-						//Hold oldHold = new Hold(new Copy("001",  new Textbook("id", 1, "ISBN", "author", "title", "edition")), this.patronTransacted, HOLD_REASON.UnpaidFine);
-						this.patronTransacted.removeHold(currentHold);
+						this.patronTransacted.removeHold(currentHold); // removing the hold
 						loggerIn.info("The hold is removed of reason : " + currentHold.getReason());
 						StdOut.println("The hold is removed of reason : " + currentHold.getReason());
 						currentHold.getHoldPatron().printPatron();
 						break;
-						
+
+					//add new hold to the Patron with mock hold data.
 					case "2" :
-						Hold newHold = new Hold(new Copy("001",  new Textbook("id", 1, "ISBN", "author", "title", "edition")), this.patronTransacted, HOLD_REASON.UnpaidFine);
-						this.patronTransacted.addHold(newHold);
+						//create mock new hold object
+						Hold newHold = new Hold(new Copy("001",  new Textbook("id", new BigDecimal("1"), "ISBN", "author", "title", "edition")), this.patronTransacted, HOLD_REASON.UnpaidFine);
+						this.patronTransacted.addHold(newHold); // add hold
 						loggerIn.info("The hold is added - reason :" + newHold.getReason() + newHold.getHoldPatron().toString());
 						StdOut.println("The hold is added - reason :" + newHold.getReason() + newHold.getHoldPatron().toString());
 						break;
