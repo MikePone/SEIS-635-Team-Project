@@ -1,6 +1,9 @@
 package com.trl;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
+
+import java.math.BigDecimal;
 
 import org.junit.After;
 import org.junit.Before;
@@ -16,7 +19,7 @@ public class HoldTest {
 	@Before
 	public void setUp() throws Exception 
 	{
-		Copy copy = new Copy("001", new Textbook("id", 1, "ISBN", "author", "title", "edition"));
+		Copy copy = new Copy("001", new Textbook("id", new BigDecimal("1"), "ISBN", "author", "title", "edition"));
 		patron = new Patron("n", "id");
 		hold= new Hold(copy, patron, HOLD_REASON.OverdueBook);
 	}

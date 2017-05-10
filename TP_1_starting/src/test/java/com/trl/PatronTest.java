@@ -6,6 +6,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import org.junit.After;
@@ -24,7 +25,7 @@ public class PatronTest {
 	{
 		patron= new Patron(NAME, PATRONID);
 
-		Textbook newTextbook = new Textbook("id", 40, "ISBN", "author", "title", "edition");
+		Textbook newTextbook = new Textbook("id", new BigDecimal("40"), "ISBN", "author", "title", "edition");
 		newCopy = new Copy("cid", newTextbook);
 	}
 

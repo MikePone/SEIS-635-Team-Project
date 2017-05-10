@@ -1,6 +1,8 @@
 package com.trl;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 import java.math.BigDecimal;
 
@@ -18,7 +20,7 @@ public class TextbookTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		textbook= new Textbook(BOOKID,new BigDecimal(40),ISBN,AUTHOR,TITLE, EDITION); 
+		textbook= new Textbook(BOOKID,new BigDecimal("40"),ISBN,AUTHOR,TITLE, EDITION); 
 	}
 
 	@After
@@ -37,17 +39,17 @@ public class TextbookTest {
 
 	@Test(expected=IllegalArgumentException.class)
 	public void testGetNullBookId() {  
-		textbook= new Textbook(null,new BigDecimal(40),ISBN,AUTHOR,TITLE, EDITION);//should throw an exception
+		textbook= new Textbook(null,new BigDecimal("40"),ISBN,AUTHOR,TITLE, EDITION);//should throw an exception
 	}
 	
 	@Test
 	public void testGetPrice() { 
-		assertEquals(new BigDecimal(40), textbook.getPrice());
+		assertEquals(new BigDecimal("40"), textbook.getPrice());
 	}
 
 	@Test(expected=IllegalArgumentException.class)
 	public void testGetNegativePrice() {  
-		textbook= new Textbook(BOOKID,new BigDecimal(-1),ISBN,AUTHOR,TITLE, EDITION);//should throw an exception
+		textbook= new Textbook(BOOKID,new BigDecimal("-1"),ISBN,AUTHOR,TITLE, EDITION);//should throw an exception
 	}
 	
 	@Test
@@ -57,7 +59,7 @@ public class TextbookTest {
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void testGetNullISBN() {  
-		textbook= new Textbook(BOOKID,new BigDecimal(40),null,AUTHOR,TITLE, EDITION);//should throw an exception 
+		textbook= new Textbook(BOOKID,new BigDecimal("40"),null,AUTHOR,TITLE, EDITION);//should throw an exception 
 	}
 
 	@Test
@@ -67,14 +69,14 @@ public class TextbookTest {
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void testGetNullAuthor() { 
-		textbook= new Textbook(BOOKID,new BigDecimal(40),ISBN,null,TITLE, EDITION);//should throw an exception
+		textbook= new Textbook(BOOKID,new BigDecimal("40"),ISBN,null,TITLE, EDITION);//should throw an exception
 	}
 
 	@Test
 	public void testGetTitle() {
 		assertEquals(TITLE, textbook.getTitle());
 		try {
-			textbook= new Textbook(BOOKID,new BigDecimal(40),ISBN,AUTHOR,null, EDITION);//should throw an exception
+			textbook= new Textbook(BOOKID,new BigDecimal("40"),ISBN,AUTHOR,null, EDITION);//should throw an exception
 			fail();//fail if we get here,
 		}catch (IllegalArgumentException e) {
 			//success!
@@ -86,7 +88,7 @@ public class TextbookTest {
 	@Test
 	public void testGetEdition() {
 		assertEquals(EDITION, textbook.getEdition()); 
-		textbook= new Textbook(BOOKID,new BigDecimal(40),ISBN,AUTHOR,TITLE, null);//this is OK.
+		textbook= new Textbook(BOOKID,new BigDecimal("40"),ISBN,AUTHOR,TITLE, null);//this is OK.
 		assertEquals(null, textbook.getEdition()); 
 		
 	}

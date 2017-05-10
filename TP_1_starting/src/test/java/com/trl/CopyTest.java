@@ -3,6 +3,8 @@ package com.trl;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.math.BigDecimal;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,7 +19,7 @@ public class CopyTest {
 	public void setUp()
 	{
 		patron= new Patron("Patron1", "001");
-		textBook = new Textbook("id", 40, "ISBN", "author", "title","Edition1");
+		textBook = new Textbook("id", new BigDecimal("40"), "ISBN", "author", "title","Edition1");
 		copy = new Copy(COPYID, textBook);		
 	}
 
@@ -50,7 +52,7 @@ public class CopyTest {
 	@Test
 	public void testGetTextbook() 
 	{
-		Textbook newTextbook = new Textbook("id", 40, "ISBN", "author", "title","Edition1");
+		Textbook newTextbook = new Textbook("id", new BigDecimal("40"), "ISBN", "author", "title","Edition1");
 		assertEquals(newTextbook, textBook); 
 	}
 	

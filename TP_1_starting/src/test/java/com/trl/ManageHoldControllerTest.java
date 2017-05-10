@@ -1,6 +1,9 @@
 package com.trl;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.math.BigDecimal;
 
 import org.junit.After;
 import org.junit.Before;
@@ -20,7 +23,7 @@ public class ManageHoldControllerTest {
 	public void setUp() throws Exception {
 		controller = new ManageHoldController(dataStore);
 		patronTransacted= new Patron("n", "id");
-		Copy copy = new Copy("001", new Textbook("id", 1, "ISBN", "author", "title", "edition"));
+		Copy copy = new Copy("001", new Textbook("id", new BigDecimal("1"), "ISBN", "author", "title", "edition"));
 		hold= new Hold(copy, patronTransacted, HOLD_REASON.OverdueBook);
 	}
 

@@ -28,6 +28,13 @@ public class CheckInControllerTest {
 		assertTrue(controller.startTransaction(patron)); 
 	}
 
+	/*@Test
+	public void testMoreBooks() throws Exception{
+		boolean result = true;
+		controller.checkInBooks();
+		assertEquals(result,returnResult ); 
+	}*/
+	
 	@Test
 	public void testEndTransaction() throws Exception{
 		assertTrue(controller.startTransaction(patron)); 

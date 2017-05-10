@@ -3,6 +3,8 @@ package com.trl;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.math.BigDecimal;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,7 +21,7 @@ public class DataStoreTest {
 	{
 		dataStore= new DataStore();
 		patron = new Patron("Patron1", "001");
-		Textbook book = new Textbook("Title1", 100, "123","Author","Title1","Edition1");
+		Textbook book = new Textbook("Title1", new BigDecimal("100"), "123","Author","Title1","Edition1");
 		copy = new Copy("Copy1", book);
 	}
 
