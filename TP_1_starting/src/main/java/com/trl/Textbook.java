@@ -17,7 +17,7 @@ public class Textbook
 			throw new IllegalArgumentException("Book ID cannot be empty");
 		}
 		this.textbookID = id;
-		if (price.equals(0)) {
+		if (price.compareTo(BigDecimal.ZERO) < 0 ) {
 			throw new IllegalArgumentException("price must be 0, or a positive number");
 		}
 		this.price = price;
