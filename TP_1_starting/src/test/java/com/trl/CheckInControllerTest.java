@@ -13,10 +13,12 @@ public class CheckInControllerTest {
 	private CheckInController controller;
 	private final DataStore ds = new DataStore();
 	private final Patron patron = ds.getPatron("001"); 
+	private RentalAppViewStub view;
 	
 	@Before
 	public void setUp() throws Exception {
-		controller = new CheckInController(ds);
+		view = new RentalAppViewStub();
+		controller = new CheckInController(ds,view);
 	}
 
 	@After
@@ -50,5 +52,15 @@ public class CheckInControllerTest {
 	public void testEndNoTransactions() throws Exception{
 		assertTrue(controller.endTransaction(patron));
 	}
-
+	
+	@Test
+	public void testCheckIn() throws Exception {
+		view.addInputString("Copy1");
+		view.addInputString("N");
+		assertTrue(controller.startTransaction(patron)); 
+		controller.checkInBooks();
+		assertTrue(controller.endTransaction(patron)); 
+		assertEquals(3, view.getOutputs().size());
+		assertEquals("CopyID Copy1 not checked out to Patron!", view.getOutputs().get(1));
+	}
 }

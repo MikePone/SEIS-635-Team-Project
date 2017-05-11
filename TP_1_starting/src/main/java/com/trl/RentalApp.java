@@ -12,7 +12,7 @@ import com.trl.exception.TransactionAlreadyInProgress;
 import com.trl.stdlib.StdIn;
 import com.trl.stdlib.StdOut; 
 
-public class RentalApp 
+public class RentalApp implements RentalAppView
 {
 	public static final String LOGGER_CHECKIN_NAME = "com.trl.checkin";
 	public static final String LOGGER_CHECKOUT_NAME = "com.trl.checkout";
@@ -23,8 +23,23 @@ public class RentalApp
 	private static final Logger loggerOut = LogManager.getLogger(LOGGER_CHECKOUT_NAME);
 	private static final Logger loggerSell = LogManager.getLogger(LOGGER_SELL_NAME);
 	
+	//implement interface here to show a message.
+	//pass the interface to the controller and the controller calls showMessage on the interface.
+	//showMessageWithInput?
+	//Observer pattern.
+	
 	public static void main(String[] args) 
 	{
+		RentalApp app = new RentalApp();
+		app.startApp();
+	}
+
+	private RentalApp() {
+		
+	}
+	
+	private void startApp() {
+
 		showInstructions(); 
 		//GET User input for Patron
 		//TODO enable changing of patrons - the choosing of a patron should probably come after choice of 1,2,3 or 4.
@@ -104,8 +119,8 @@ public class RentalApp
 			StdOut.println(patronID + " is an invalid Patron");				
 		}
 	}
-
-	private static void showInstructions() {
+	
+	private void showInstructions() {
 		StdOut.println("-------******----------"); 
 		StdOut.println("Running Code tips : ");
 		StdOut.println("10 Mock Patron Ids format; 001 through 010 ");
@@ -121,7 +136,7 @@ public class RentalApp
 		StdOut.println();
 	}
 
-	private static void showMainMenu() {
+	private void showMainMenu() {
 		StdOut.println("Please enter the number next to what you want to do");
 		StdOut.println("1 : Check out books to Patron");
 		StdOut.println("2 : Check in books from Patron");
@@ -135,7 +150,7 @@ public class RentalApp
 		StdOut.println("10 : Exit the system");
 	}
 
-	private static void manageHolds(Patron patron) {
+	private void manageHolds(Patron patron) {
 		try {
 			ManageHoldController controller = new ManageHoldController(dataStore);
 			controller.startTransaction(patron);// end patron transaction session
@@ -151,7 +166,7 @@ public class RentalApp
 		}
 	}
 
-	private static void runHoldCheck(Patron patron) {
+	private void runHoldCheck(Patron patron) {
 		/*
 		 * We are going to go through all the copies and make sure their due dates are not BEFORE the current date and thus overdue.
 		 */
@@ -165,7 +180,7 @@ public class RentalApp
 		StdOut.println( patron);
 	}
 
-	private static void payFine(Patron patron) {
+	private void payFine(Patron patron) {
 		try {
 			PayFineController controller = new PayFineController(dataStore);
 			controller.startTransaction(patron); // start patron transaction session
@@ -181,7 +196,7 @@ public class RentalApp
 		}
 	}
 
-	private static void sellBook(Patron patron) {
+	private void sellBook(Patron patron) {
 		try {
 			//Creating new Object Textbook with copyId and price associated.
 			//This is loaded along with Patron and Copy for mock data in dataStore
@@ -200,7 +215,7 @@ public class RentalApp
 		}
 	}
 
-	private static void listUsers() {
+	private void listUsers() {
 		loggerIn.info("Listing users in system ");
 		StdOut.println("\nList users");
 		//print out all the Patron list stored in the dataStore mock up.
@@ -209,7 +224,7 @@ public class RentalApp
 		}
 	}
 
-	private static void listBooks() {
+	private void listBooks() {
 		loggerIn.info("Listing books from Inventory ");
 		StdOut.println("\nTODO: list books");
 		//print out all the copy list stored in the dataStore mock up.
@@ -218,7 +233,7 @@ public class RentalApp
 		}
 	}
 
-	private static void checkOut(Patron patron) {
+	private void checkOut(Patron patron) {
 		try {
 			//using similar method as CheckIn for Controller
 			CheckOutController controller = new CheckOutController(dataStore);
@@ -238,9 +253,9 @@ public class RentalApp
 		}
 	}
 
-	private static void checkIn(Patron patron) {
+	private void checkIn(Patron patron) {
 		try {
-			CheckInController controller = new CheckInController(dataStore);
+			CheckInController controller = new CheckInController(dataStore, this);
 			controller.startTransaction(patron); // start patron transaction session
 			loggerIn.info("starting transaction for Patron " + patron.getName());
 			controller.checkInBooks();
@@ -257,4 +272,14 @@ public class RentalApp
 		}
 	}	
 	 
+	@Override
+	public void showMessage(Message msg) {
+		StdOut.println(msg.getTheMessage());
+	}
+	
+	@Override
+	public String showMessageWithInput(Message msg) {
+		StdOut.println(msg.getTheMessage());
+		return StdIn.readLine();
+	}
 }

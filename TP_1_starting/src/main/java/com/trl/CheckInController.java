@@ -9,17 +9,17 @@ import org.apache.logging.log4j.Logger;
 import com.trl.exception.CopyNotCheckedOutException;
 import com.trl.exception.CopyNotFoundException;
 import com.trl.exception.NoTransactionInProgress;
-import com.trl.exception.TransactionAlreadyInProgress;
-import com.trl.stdlib.StdIn;
-import com.trl.stdlib.StdOut;
+import com.trl.exception.TransactionAlreadyInProgress; 
 
 public class CheckInController extends Controller{
 	private Patron patronTransacted;
 	private List<Copy> copiesToCheckIn;
 	private final static Logger loggerIn = LogManager.getLogger(RentalApp.LOGGER_CHECKIN_NAME);
+	private final RentalAppView view;
 	
-	public CheckInController(DataStore ds) {
+	public CheckInController(DataStore ds, RentalAppView view) {
 		super(ds);
+		this.view=view;
 	}
 	
 	@Override
@@ -73,26 +73,26 @@ public class CheckInController extends Controller{
 		if (this.patronTransacted.hasHolds())
 		{
 			loggerIn.info("ALERT : THIS PATRON HAS HOLD, OUTSTANDING DUES " + this.patronTransacted);
-			StdOut.println("-------******----------"); 
-			StdOut.println("ALERT : THIS PATRON HAS HOLD, OUTSTANDING DUES : " + this.patronTransacted);
-			StdOut.println("-------******----------"); 
+			view.showMessage(
+					new Message("-------******----------")
+					.addMessage("ALERT : THIS PATRON HAS HOLD, OUTSTANDING DUES : " + this.patronTransacted)
+					.addMessage("-------******----------"));
 		}
 
 		boolean done = false;
 		try {
 			while (!done){
-				StdOut.println("\nPlease enter the copyID to check in");
-				String copyID = StdIn.readLine();
+				String copyID = view.showMessageWithInput(new Message("Please enter the copyID to check in"));
 			    // check if book exist in the system list.
 				if (!dataStore.containsCopy(copyID)){
-					StdOut.println("\ncopyID " + copyID +" not found!");
+					view.showMessage(new Message("copyID " + copyID +" not found!"));
 					throw new CopyNotFoundException("Copy : " + copyID + " not found");
 				}
 				try {
 					addCopyToCheckin(copyID);
 				} catch (CopyNotCheckedOutException e) {
 					loggerIn.info("Copy Not checked out to Patron: " + copyID);
-					StdOut.println("CopyID " + copyID +" not checked out to Patron!");
+					view.showMessage(new Message("CopyID " + copyID +" not checked out to Patron!"));
 				}
 				loggerIn.info("added book to check in " + copyID);
 				// allow multiple check in ; user input
@@ -105,10 +105,10 @@ public class CheckInController extends Controller{
 			}
 		} catch (NoTransactionInProgress e) {
 			loggerIn.info("no transaction in progress",e);
-			StdOut.println("cannot add a book, a transaction is not started");
+			view.showMessage(new Message("cannot add a book, a transaction is not started")); 
 		} catch (CopyNotFoundException e) {
 			loggerIn.info("copy not found : ",e);
-			StdOut.println("cannot add a book, it wasn't in the database");
+			view.showMessage(new Message("cannot add a book, it wasn't in the database"));  
 		}
 	}
 	
@@ -117,9 +117,7 @@ public class CheckInController extends Controller{
 		boolean returnVal=false;
 		
 		while (!done) {
-			StdOut.println("more books to check in?  type 'Y' or 'N'");
-			//if done, set done to true
-			String moreBooks = StdIn.readLine();
+			String moreBooks = view.showMessageWithInput(new Message("more books to check in?  type 'Y' or 'N'"));
 			
 			if ("N".equalsIgnoreCase(moreBooks)){
 				done=true;
@@ -128,7 +126,7 @@ public class CheckInController extends Controller{
 				done=true;
 				returnVal=true;
 			}else {
-				StdOut.println("unrecognized option");
+				view.showMessage(new Message("unrecognized option : " + moreBooks));  
 			}
 		}
 		return returnVal;
