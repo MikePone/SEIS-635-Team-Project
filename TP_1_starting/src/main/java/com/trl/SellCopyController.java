@@ -18,9 +18,11 @@ public class SellCopyController extends Controller{
 	private List<Copy> copiesToCheckIn;
 	private List<Textbook> prices;
 	private final static Logger loggerIn = LogManager.getLogger(RentalApp.LOGGER_CHECKIN_NAME);
-	
-	public SellCopyController(DataStore ds) {
+	private final RentalAppView view;
+
+	public SellCopyController(DataStore ds, RentalAppView view) {
 		super(ds);
+		this.view=view;
 	}
 	
 	@Override
@@ -58,11 +60,11 @@ public class SellCopyController extends Controller{
 		boolean done = false;
 		try {
 			while (!done){
-				StdOut.println("\nPlease enter the copyID to sell");
-				String copyID = StdIn.readLine();
-				
+				String copyID = view.showMessageWithInput(new Message("Please enter the copyID to sell"));
+
 				//validate the copy is valid 
 				if (!this.dataStore.containsCopy(copyID)) {
+					view.showMessage(new Message("copyID " + copyID +" not found!"));
 					throw new CopyNotFoundException("Copy : " + copyID + " not found");
 				}
 				Copy c = this.dataStore.getCopy(copyID);
@@ -72,7 +74,7 @@ public class SellCopyController extends Controller{
 				
 				//remove after copy is sold from dataStore copy list
 				this.dataStore.removeCopy(c);
-				StdOut.println("The book " + copyID+ " is sold to " + this.patronTransacted.getName() + " for the amount of " + amount);
+				view.showMessage(new Message("The book " + copyID+ " is sold to " + this.patronTransacted.getName() + " for the amount of " + amount));
 				loggerIn.info("sold book " + copyID + " to " + this.patronTransacted.getName());
 				
 				// allow multiple sell copy; user input
@@ -97,9 +99,8 @@ public class SellCopyController extends Controller{
 		boolean returnVal=false;
 		
 		while (!done) {
-			StdOut.println("more books to Sell?  type 'Y' or 'N'");
+			String moreBooks = view.showMessageWithInput(new Message("more books to check in?  type 'Y' or 'N'"));
 			//if done, set done to true
-			String moreBooks = StdIn.readLine();
 			
 			if ("N".equalsIgnoreCase(moreBooks)){
 				done=true;
@@ -108,7 +109,7 @@ public class SellCopyController extends Controller{
 				done=true;
 				returnVal=true;
 			}else {
-				StdOut.println("unrecognized option");
+				view.showMessage(new Message("unrecognized option : " + moreBooks));  
 			}
 		}
 		return returnVal;

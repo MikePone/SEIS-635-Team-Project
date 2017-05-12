@@ -200,7 +200,7 @@ public class RentalApp implements RentalAppView
 		try {
 			//Creating new Object Textbook with copyId and price associated.
 			//This is loaded along with Patron and Copy for mock data in dataStore
-			SellCopyController controller = new SellCopyController(dataStore);
+			SellCopyController controller = new SellCopyController(dataStore, this);
 			controller.startTransaction(patron);// start patron transaction session
 			loggerIn.info("starting transaction for Patron " + patron.getName());
 			controller.doSale();
@@ -236,7 +236,7 @@ public class RentalApp implements RentalAppView
 	private void checkOut(Patron patron) {
 		try {
 			//using similar method as CheckIn for Controller
-			CheckOutController controller = new CheckOutController(dataStore);
+			CheckOutController controller = new CheckOutController(dataStore, this);
 			controller.startTransaction(patron);// start patron transaction session
 			loggerIn.info("starting transaction for Patron " + patron.getName());
 			controller.checkOutBooks();

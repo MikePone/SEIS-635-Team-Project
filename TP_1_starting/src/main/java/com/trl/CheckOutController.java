@@ -21,9 +21,11 @@ public class CheckOutController extends Controller{
 	//This due date should be flexible and should change with each semester.
 	//The due date should be about 1 week after the semester ends to give students time to check the books back in.
 	private final Date dueDate = new Date(1495256400000l); //May 20 2017 12:00 AM
+	private final RentalAppView view;
 	
-	public CheckOutController(DataStore ds) {
+	public CheckOutController(DataStore ds, RentalAppView view) {
 		super(ds);
+		this.view=view;
 	}
 	
 	public void checkOutBooks() {
@@ -31,19 +33,19 @@ public class CheckOutController extends Controller{
 		if (this.patronTransacted.hasHolds())
 		{
 			loggerIn.info("ALERT : THIS PATRON HAS HOLD, OUTSTANDING DUES " + this.patronTransacted);
-			StdOut.println("-------******----------"); 
-			StdOut.println("ALERT : THIS PATRON HAS HOLD, OUTSTANDING DUES : " + this.patronTransacted);
-			StdOut.println("-------******----------"); 
+			view.showMessage(
+					new Message("-------******----------")
+					.addMessage("ALERT : THIS PATRON HAS HOLD, OUTSTANDING DUES : " + this.patronTransacted)
+					.addMessage("-------******----------"));
 		}
 		boolean done = false;
 		try {
 			while (!done){
-				
-				StdOut.println("\nPlease enter the copyID to check out");
-				String copyID = StdIn.readLine(); 
+				//StdOut.println("\nPlease enter the copyID to check out");
+				String copyID = view.showMessageWithInput(new Message("Please enter the copyID to check out"));
 			    // check if book exist in the system list.
 				if (!dataStore.containsCopy(copyID)){
-					StdOut.println("\ncopyID " + copyID +" not found!");
+					view.showMessage(new Message("copyID " + copyID +" not found!"));
 					throw new CopyNotFoundException("Copy : " + copyID + " not found");
 				}
 				Copy checkOutCopy = dataStore.getCopy(copyID);
@@ -60,10 +62,10 @@ public class CheckOutController extends Controller{
 			}
 		} catch (NoTransactionInProgress e) {
 			loggerIn.info("no transaction in progress",e);
-			StdOut.println("cannot add a book, a transaction is not started");
+			view.showMessage(new Message("cannot add a book, a transaction is not started")); 
 		} catch (CopyNotFoundException e) {
 			loggerIn.info("copy not found : ",e);
-			StdOut.println("cannot add a book, it wasn't in the database");
+			view.showMessage(new Message("cannot add a book, it wasn't in the database"));  
 		}
 	}
 	
@@ -72,10 +74,8 @@ public class CheckOutController extends Controller{
 		boolean returnVal=false;
 		
 		while (!done) {
-			StdOut.println("more books to check out?  type 'Y' or 'N'");
-			//if done, set done to true
-			String moreBooks = StdIn.readLine();
-			
+			String moreBooks = view.showMessageWithInput(new Message("more books to check in?  type 'Y' or 'N'"));
+			//if done, set done to true			
 			if ("N".equalsIgnoreCase(moreBooks)){
 				done=true;
 				returnVal=false;
@@ -83,7 +83,7 @@ public class CheckOutController extends Controller{
 				done=true;
 				returnVal=true;
 			}else {
-				StdOut.println("unrecognized option");
+				view.showMessage(new Message("unrecognized option : " + moreBooks));  
 			}
 		}
 		return returnVal;
