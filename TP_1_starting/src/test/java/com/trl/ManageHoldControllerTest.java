@@ -15,16 +15,15 @@ import com.trl.exception.TransactionAlreadyInProgress;
 
 public class ManageHoldControllerTest {
 	private ManageHoldController controller;
-	private final static DataStore dataStore = new DataStore();
-	private Patron patronTransacted;
+	private final static DataStore dataStore = new DataStore(); 
+	private final Patron patronHolds = dataStore.getPatron("008"); 
 	private Hold hold;
+	private RentalAppViewStub view;
 	
 	@Before
 	public void setUp() throws Exception {
-		controller = new ManageHoldController(dataStore);
-		patronTransacted= new Patron("n", "id");
-		Copy copy = new Copy("001", new Textbook("id", new BigDecimal("1"), "ISBN", "author", "title", "edition"));
-		hold= new Hold(copy, patronTransacted, HOLD_REASON.OverdueBook);
+		view = new RentalAppViewStub();
+		controller = new ManageHoldController(dataStore,view); 
 	}
 
 	@After
@@ -33,34 +32,45 @@ public class ManageHoldControllerTest {
 
 	@Test
 	public void testStartTransaction() throws Exception{
-		assertTrue(controller.startTransaction(patronTransacted) ); 
+		assertTrue(controller.startTransaction(patronHolds) ); 
 	}
 
 	@Test(expected=TransactionAlreadyInProgress.class)
 	public void testStart2Transactions() throws Exception {
-		controller.startTransaction(patronTransacted);
-		controller.startTransaction(patronTransacted);
+		controller.startTransaction(patronHolds);
+		controller.startTransaction(patronHolds);
 		fail();
 	}
 
 	@Test
 	public void testEndTransaction()  throws Exception{
-		assertTrue(controller.startTransaction(patronTransacted));
-		assertTrue(controller.endTransaction(patronTransacted));
+		assertTrue(controller.startTransaction(patronHolds));
+		assertTrue(controller.endTransaction(patronHolds));
 	}
 
 	@Test(expected=NoTransactionInProgress.class)
 	public void testEnd2Transaction() throws Exception{
-		assertTrue(controller.startTransaction(patronTransacted));
-		assertTrue(controller.endTransaction(patronTransacted));
-		assertTrue(controller.endTransaction(patronTransacted));
+		assertTrue(controller.startTransaction(patronHolds));
+		assertTrue(controller.endTransaction(patronHolds));
+		assertTrue(controller.endTransaction(patronHolds));
 	 
 	}
- 
 
 	@Test
-	public void testManageHold() {
-	//	fail("Not yet implemented");
+	public void testRemoveHold() throws Exception{
+		view.addInputString("1");
+		view.addInputString("3");
+		assertTrue(controller.startTransaction(patronHolds));
+		controller.manageHold();
+		assertTrue(controller.endTransaction(patronHolds));
+	}
+	@Test
+	public void testAddHold() throws Exception{
+		view.addInputString("2");
+		view.addInputString("3");
+		assertTrue(controller.startTransaction(patronHolds));
+		controller.manageHold();
+		assertTrue(controller.endTransaction(patronHolds));
 	}
 
 }

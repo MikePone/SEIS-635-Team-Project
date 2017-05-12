@@ -152,7 +152,7 @@ public class RentalApp implements RentalAppView
 
 	private void manageHolds(Patron patron) {
 		try {
-			ManageHoldController controller = new ManageHoldController(dataStore);
+			ManageHoldController controller = new ManageHoldController(dataStore, this);
 			controller.startTransaction(patron);// end patron transaction session
 			loggerIn.info("starting transaction for Patron " + patron.getName());
 			controller.manageHold();

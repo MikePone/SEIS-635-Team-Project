@@ -25,7 +25,7 @@ public class RentalAppViewStub implements RentalAppView {
 	
 	@Override
 	public String showMessageWithInput(Message msg) {
-		this.outputs.add(msg.getTheMessage());
+		this.outputs.add(msg.getTheMessage()); 
 		return inputs.poll();
 	};
 	

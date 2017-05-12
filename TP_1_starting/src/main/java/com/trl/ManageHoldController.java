@@ -18,9 +18,11 @@ public class ManageHoldController extends Controller{
 	private List<Copy> copiesToCheckIn;
 	private List<Textbook> prices;
 	private final static Logger loggerIn = LogManager.getLogger(RentalApp.LOGGER_CHECKIN_NAME);
+	private final RentalAppView view;
 	
-	public ManageHoldController(DataStore ds) {
+	public ManageHoldController(DataStore ds, RentalAppView view) {
 		super(ds);
+		this.view=view;
 	}
 	
 	@Override
@@ -47,17 +49,16 @@ public class ManageHoldController extends Controller{
 	
 	//allow rental staff to manage hold, add or remove existing hold
 	public void manageHold() {
-		StdOut.println("\nManage hold for patron " + this.patronTransacted.toString());
+		view.showMessage(new Message("Manage hold for patron " + this.patronTransacted.toString()));
 
 		boolean exit = false;
 			while (!exit){
-				StdOut.println("Please enter the number next to what you want to do");
-				StdOut.println("1 : Remove Hold");
-				StdOut.println("2 : Add hold");
-				StdOut.println("3 : Exit");
-				String in = StdIn.readLine();
-				
-				switch (in) {
+				String choice = view.showMessageWithInput(new Message("Please enter the number next to what you want to do")
+						.addMessage("1 : Remove Hold")
+						.addMessage("2 : Add hold")
+						.addMessage("3 : Exit")); 
+
+				switch (choice) {
 					case "1":
 						Hold currentHold = null;
 						//get the current hold for the patron
@@ -69,7 +70,7 @@ public class ManageHoldController extends Controller{
 
 						this.patronTransacted.removeHold(currentHold); // removing the hold
 						loggerIn.info("The hold is removed of reason : " + currentHold.getReason());
-						StdOut.println("The hold is removed of reason : " + currentHold.getReason());
+						view.showMessage(new Message("The hold is removed of reason : " + currentHold.getReason()));
 						currentHold.getHoldPatron().printPatron();
 						break;
 
@@ -79,14 +80,14 @@ public class ManageHoldController extends Controller{
 						Hold newHold = new Hold(new Copy("001",  new Textbook("id", new BigDecimal("1"), "ISBN", "author", "title", "edition")), this.patronTransacted, HOLD_REASON.UnpaidFine);
 						this.patronTransacted.addHold(newHold); // add hold
 						loggerIn.info("The hold is added - reason :" + newHold.getReason() + newHold.getHoldPatron().toString());
-						StdOut.println("The hold is added - reason :" + newHold.getReason() + newHold.getHoldPatron().toString());
+						view.showMessage(new Message("The hold is added - reason :" + newHold.getReason() + newHold.getHoldPatron().toString()));
 						break;
 						
 					case "3" :
 						exit=true;
 						break;
 					default: // action is unrecognized.
-						StdOut.println("unrecocognized option:" + in);
+						view.showMessage(new Message("unrecocognized option:" + choice));
 					}
 				}
 	}
