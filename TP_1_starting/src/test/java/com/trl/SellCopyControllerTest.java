@@ -1,5 +1,6 @@
 package com.trl;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -19,11 +20,13 @@ public class SellCopyControllerTest
 	private Patron patronTransacted;
 	private final static DataStore dataStore = new DataStore();
 	private Hold hold;
-	
+	private RentalAppViewStub view;
+
 	@Before
 	public void setUp() throws Exception 
 	{
-		sellCopyController = new SellCopyController(dataStore);
+		view = new RentalAppViewStub();
+		sellCopyController = new SellCopyController(dataStore, view);
 		patronTransacted= new Patron("n", "id");
 		Copy copy = new Copy("001", new Textbook("id", new BigDecimal("1"), "ISBN", "author", "title", "edition"));
 		hold= new Hold(copy, patronTransacted, HOLD_REASON.OverdueBook);
@@ -60,15 +63,15 @@ public class SellCopyControllerTest
 	 
 	}
 	
-//	@Test
-//	public void testCalculateAmount()  throws Exception
-//	{
-//		sellCopyController.startTransaction(patronTransacted);
-//		double actualPrice = dataStore.geTextbook("Book1").getPrice();
-//		double price = 0 ; 
-//		 price = sellCopyController.doSale("Copy1");
-//		 
-//        assertEquals (actualPrice, price, 100.0);
-//	}
+	@Test
+	public void testCalculateAmount()  throws Exception
+	{
+		view.addInputString("Copy1");
+		view.addInputString("N");
+		assertTrue(sellCopyController.startTransaction(patronTransacted)); 
+		sellCopyController.doSale();
+		assertTrue(sellCopyController.endTransaction(patronTransacted)); 
+		assertEquals("The book Copy1 is sold to n for the amount of 100", view.getOutputs().get(1));
+	}
 
 }

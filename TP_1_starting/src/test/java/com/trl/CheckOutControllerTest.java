@@ -1,7 +1,6 @@
 package com.trl;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 import java.math.BigDecimal;
 
@@ -20,12 +19,13 @@ public class CheckOutControllerTest
 	private Patron patronTransacted;
 	private Hold hold;
 	private final static DataStore dataStore = new DataStore();
-
+	private RentalAppViewStub view;
 	
 	@Before
 	public void setUp() throws Exception 
 	{
-		checkOutController = new CheckOutController(dataStore);
+		view = new RentalAppViewStub();
+		checkOutController = new CheckOutController(dataStore, view);
 		patronTransacted= new Patron("n", "id");
 		Copy copy = new Copy("001", new Textbook("id", new BigDecimal("1"), "ISBN", "author", "title", "edition"));
 		hold= new Hold(copy, patronTransacted, HOLD_REASON.OverdueBook);
@@ -67,6 +67,16 @@ public class CheckOutControllerTest
 		assertTrue(checkOutController.endTransaction(patronTransacted));
 		assertTrue(checkOutController.endTransaction(patronTransacted));
 	 
+	}
+	
+	@Test
+	public void testCheckOut() throws Exception {
+		view.addInputString("Copy1");
+		view.addInputString("N");
+		assertTrue(checkOutController.startTransaction(patronTransacted)); 
+		checkOutController.checkOutBooks();
+		assertTrue(checkOutController.endTransaction(patronTransacted)); 
+		assertEquals(2, view.getOutputs().size());
 	}
 
 }
