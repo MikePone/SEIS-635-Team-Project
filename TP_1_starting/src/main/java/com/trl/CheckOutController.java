@@ -29,15 +29,6 @@ public class CheckOutController extends Controller{
 	}
 	
 	public void checkOutBooks() {
-		// Alert Staff if Patron has existing hold
-		if (this.patronTransacted.hasHolds())
-		{
-			loggerIn.info("ALERT : THIS PATRON HAS HOLD, OUTSTANDING DUES " + this.patronTransacted);
-			view.showMessage(
-					new Message("-------******----------")
-					.addMessage("ALERT : THIS PATRON HAS HOLD, OUTSTANDING DUES : " + this.patronTransacted)
-					.addMessage("-------******----------"));
-		}
 		boolean done = false;
 		try {
 			while (!done){
@@ -98,6 +89,11 @@ public class CheckOutController extends Controller{
 		}
 		//validate - if patron has hold, they cannot checkout
 		if (patron.hasHolds()) {
+			loggerIn.info("ALERT : THIS PATRON HAS HOLD, OUTSTANDING DUES " + this.patronTransacted);
+			view.showMessage(
+					new Message("-------******----------")
+					.addMessage("ALERT : THIS PATRON HAS HOLD, OUTSTANDING DUES : " + this.patronTransacted)
+					.addMessage("-------******----------"));
 			throw new HasHoldsException("cannot check out a book with holds on account.");
 		}
 		this.patronTransacted = patron;
