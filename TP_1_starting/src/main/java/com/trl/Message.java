@@ -8,7 +8,7 @@ public class Message {
 	}
 
 	public Message addMessage(String msg) {
-		theMessage+="/n"+ msg;
+		theMessage+="\n"+ msg;
 		return this;
 	}
 	public String getTheMessage() {

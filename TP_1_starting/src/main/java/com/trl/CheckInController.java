@@ -48,15 +48,7 @@ public class CheckInController extends Controller{
 		return true;
 	}
 	
-	private void addCopyToCheckin(String copyID)  throws NoTransactionInProgress, CopyNotFoundException, CopyNotCheckedOutException{
-		//validation the transaction session is valid
-		if (this.patronTransacted == null) {
-			throw new NoTransactionInProgress("no transaction in progress");
-		}
-		//validation the transaction session is valid
-		if (!this.dataStore.containsCopy(copyID)) {
-			throw new CopyNotFoundException("Copy : " + copyID + " not found");
-		}
+	private void addCopyToCheckin(String copyID)  throws CopyNotCheckedOutException{ 
 		Copy copy = this.dataStore.getCopy(copyID);
 		//Is the copy checked out to this user?
 		//validation the copy is checkout out to this patron is valid
@@ -68,7 +60,12 @@ public class CheckInController extends Controller{
 			
 	}
 	
-	public void checkInBooks() {
+	public void checkInBooks() throws NoTransactionInProgress {
+		//validation the transaction session is valid
+		if (this.patronTransacted == null) {
+			throw new NoTransactionInProgress("no transaction in progress");
+		}
+		
 		// Alert Staff if Patron has existing hold
 		if (this.patronTransacted.hasHolds())
 		{
@@ -103,9 +100,6 @@ public class CheckInController extends Controller{
 				}
 
 			}
-		} catch (NoTransactionInProgress e) {
-			loggerIn.info("no transaction in progress",e);
-			view.showMessage(new Message("cannot add a book, a transaction is not started")); 
 		} catch (CopyNotFoundException e) {
 			loggerIn.info("copy not found : ",e);
 			view.showMessage(new Message("cannot add a book, it wasn't in the database"));  

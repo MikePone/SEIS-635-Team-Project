@@ -29,4 +29,15 @@ public class RentalAppViewStub implements RentalAppView {
 		return inputs.poll();
 	};
 	
+	@Override
+	public String toString() {
+
+		String retVal = "";
+		for (String string : outputs) {
+			retVal+=string;
+		}
+		
+		return retVal;
+	}
+	
 }
