@@ -18,7 +18,7 @@ public class SellCopyControllerTest
 {
 	private SellCopyController sellCopyController;
 	private Patron patronTransacted;
-	private final static DataStore dataStore = new DataStore();
+	private final DataStore dataStore = new DataStore();
 	private Hold hold;
 	private RentalAppViewStub view;
 
