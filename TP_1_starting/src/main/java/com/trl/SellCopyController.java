@@ -99,7 +99,7 @@ public class SellCopyController extends Controller{
 		boolean returnVal=false;
 		
 		while (!done) {
-			String moreBooks = view.showMessageWithInput(new Message("more books to check in?  type 'Y' or 'N'"));
+			String moreBooks = view.showMessageWithInput(new Message("more books to sell?  type 'Y' or 'N'"));
 			//if done, set done to true
 			
 			if ("N".equalsIgnoreCase(moreBooks)){
